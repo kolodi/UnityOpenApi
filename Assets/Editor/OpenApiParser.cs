@@ -14,7 +14,16 @@ public class OpenApiParser : ScriptableObject
     [Header("Dependencies")]
     [SerializeField] private HttpAsset http = null;
 
+    [SerializeField]
+    [HideInInspector]
+    private TextAsset textAsset;
+
     private string _lastAssetPath = "Assets";
+
+    public void ParseFromAsset()
+    {
+        Parse(textAsset.text);
+    }
 
     public void Parse(string json)
     {
@@ -84,7 +93,6 @@ public class OpenApiParser : ScriptableObject
 public class OpenApiParserEditor : Editor
 {
     string url = "https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/uspto.yaml";
-    [SerializeField] TextAsset textAsset;
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
@@ -94,10 +102,12 @@ public class OpenApiParserEditor : Editor
         var t = (OpenApiParser)target;
 
         GUILayout.BeginVertical();
-        textAsset = (TextAsset)EditorGUILayout.ObjectField("API Asset", textAsset, typeof(TextAsset), false);
+        var a = serializedObject.FindProperty("textAsset");
+        EditorGUILayout.ObjectField(a);
+        serializedObject.ApplyModifiedProperties();
         if (GUILayout.Button("Parse From Asset"))
         {
-            t.Parse(textAsset.text);
+            t.ParseFromAsset();
         }
         GUILayout.EndVertical();
 

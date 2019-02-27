@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: Api Parser
   m_EditorClassIdentifier: 
   http: {fileID: 11400000, guid: 02dd1d39e1c3fcc4c9e42b163921bb8b, type: 2}
+  textAsset: {fileID: 4900000, guid: 8dde3cc8bc2f86c4b85083dce35aa820, type: 3}

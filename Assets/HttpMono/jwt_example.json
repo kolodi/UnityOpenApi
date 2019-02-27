@@ -1,0 +1,7 @@
+{
+	"AccessToken": "ssssss",
+	"ExpiresIn": 3600,
+	"TokenType": "Bearer",
+	"RefreshToken": "sssss",
+	"IdToken": "sssss"
+}

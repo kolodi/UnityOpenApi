@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23dd3e09bedbc654c86047f0caf86833, type: 3}
+  m_Name: PetStore
+  m_EditorClassIdentifier: 
+  rawData:
+    openapi: 3.0.1
+    info:
+      title: PetStore
+      version: 2019-02-22T08:54:06Z
+    servers:
+    - url: https://tgkevkkd95.execute-api.eu-west-1.amazonaws.com/{basePath}
+  authorizers:
+  - {fileID: 11400000, guid: 386b604548d78a14a8c068a428f097fd, type: 2}
+  serverVariableValues:
+  - varName: basePath
+    varValue: /v1

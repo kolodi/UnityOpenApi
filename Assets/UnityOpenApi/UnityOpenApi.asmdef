@@ -1,0 +1,15 @@
+{
+    "name": "UnityOpenApi",
+    "references": [
+        "HttpMono",
+        "PetStore"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
+}

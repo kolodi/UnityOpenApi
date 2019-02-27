@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddc9c7fb075f9d746a1fc51d80793887, type: 3}
+  m_Name: Airports API v2__GET
+  m_EditorClassIdentifier: 
+  apiConfig: {fileID: 11400000, guid: 8a8c4b82fc421f94d8530e53d0b95736, type: 2}
+  apiAuthorizer: {fileID: 0}
+  httpWord: 0
+  uri: https://api.transavia.com/v2/airports
+  method:
+    parameters: []
+  parametersValues: []
+  lastText: 

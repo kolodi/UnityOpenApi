@@ -7,6 +7,14 @@ namespace UnityOpenApi
     [CreateAssetMenu(menuName ="Unity Open API/API Assets/Path Item", fileName ="Path asset")]
     public class PathItemAsset : ScriptableObject
     {
-        public ApiAsset ApiAsset { get; set; }
+        [HideInInspector]
+        public ApiAsset ApiAsset;
+
+        
+        public string Summary;
+        public string Description;
+        public List<OAOperation> Operations;
+        public List<OAServer> Servers;
+        public List<OAParameter> Parameters;
     }
 }

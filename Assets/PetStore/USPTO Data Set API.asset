@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d2a7184f8e1aaa42b46af10ce732be1, type: 3}
+  m_Name: USPTO Data Set API
+  m_EditorClassIdentifier: 
+  _currentServer:
+    Description: 
+    Url: '{scheme}://developer.uspto.gov/ds-api'
+    Variables:
+    - Name: scheme
+      Description: The Data Set API is accessible via https and http
+      Default: https
+      Enum:
+      - https
+      - http
+      Current: 0
+  _servers:
+  - Description: 
+    Url: '{scheme}://developer.uspto.gov/ds-api'
+    Variables:
+    - Name: scheme
+      Description: The Data Set API is accessible via https and http
+      Default: https
+      Enum:
+      - https
+      - http
+      Current: 0
+  _info:
+    Title: USPTO Data Set API
+    Description: The Data Set API (DSAPI) allows the public users to discover and
+      search USPTO exported data sets. This is a generic API that allows USPTO users
+      to make any CSV based data files searchable through API. With the help of GET
+      call, it returns the list of data fields that are searchable. With the help
+      of POST call, data can be fetched based on the filters on the field names. Please
+      note that POST call is used to search the actual data. The reason for the POST
+      call is that it allows users to specify any complex search criteria without
+      worry about the GET size limitations as well as encoding of the input parameters.
+    Version: 1.0.0
+    TermsOfService: 
+    Contact:
+      Name: Open Data Portal
+      Url: https://developer.uspto.gov/
+      Email: developer@uspto.gov
+      Present: 1
+    License:
+      Name: 
+      Url: 
+      Present: 0

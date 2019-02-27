@@ -60,7 +60,14 @@ public class OpenApiParser : ScriptableObject
         _lastAssetPath = assetsPath;
         assetsPath = assetsPath.Substring(assetsPath.IndexOf("Assets"));
         ApiAsset apiAsset = AssetsHelper.GetOrCreateScriptableObject<ApiAsset>(assetsPath, openApiDocument.Info.Title);
-        apiAsset.openApiDocument = openApiDocument;
+        apiAsset.UpdateWithApiDocument(openApiDocument);
+        apiAsset.Http = http;
+
+        foreach(var p in openApiDocument.Paths)
+        {
+
+        }
+
         AssetDatabase.SaveAssets();
     }
 
@@ -70,7 +77,7 @@ public class OpenApiParser : ScriptableObject
 public class OpenApiParserEditor : Editor
 {
     string url = "https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/uspto.yaml";
-    TextAsset textAsset;
+    [SerializeField] TextAsset textAsset;
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
@@ -97,5 +104,6 @@ public class OpenApiParserEditor : Editor
         }
         GUILayout.EndVertical();
 
+        EditorUtility.SetDirty(target);
     }
 }

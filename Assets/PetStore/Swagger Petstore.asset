@@ -12,3 +12,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d2a7184f8e1aaa42b46af10ce732be1, type: 3}
   m_Name: Swagger Petstore
   m_EditorClassIdentifier: 
+  _currentServer:
+    Description: 
+    Url: http://petstore-demo-endpoint.execute-api.com/petstore
+    Variables: []
+  _servers:
+  - Description: 
+    Url: http://petstore-demo-endpoint.execute-api.com/petstore
+    Variables: []
+  _info:
+    Title: Swagger Petstore
+    Description: A sample API that uses a petstore as an example to demonstrate features
+      in the OpenAPI 3.0 specification
+    Version: 
+    TermsOfService: http://swagger.io/terms/
+    Contact:
+      Name: Swagger API Team
+      Url: http://swagger.io/
+      Email: apiteam@swagger.io
+      Present: 0
+    License:
+      Name: Apache 2.0
+      Url: https://www.apache.org/licenses/LICENSE-2.0.html
+      Present: 0

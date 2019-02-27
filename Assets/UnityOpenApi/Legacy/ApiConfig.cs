@@ -16,6 +16,7 @@ namespace UnityOpenApi
         public OpenApi3 rawData;
         //public string baseUri;
         public List<ApiAuthorizer> authorizers;
+
         private HttpApiConnector connector;
         private HttpApiConnector Connector
         {

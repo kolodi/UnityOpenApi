@@ -24,14 +24,14 @@ MonoBehaviour:
     Title: Swagger Petstore
     Description: A sample API that uses a petstore as an example to demonstrate features
       in the OpenAPI 3.0 specification
-    Version: 
+    Version: 1.0.0
     TermsOfService: http://swagger.io/terms/
     Contact:
       Name: Swagger API Team
       Url: http://swagger.io/
       Email: apiteam@swagger.io
-      Present: 0
+      Present: 1
     License:
       Name: Apache 2.0
       Url: https://www.apache.org/licenses/LICENSE-2.0.html
-      Present: 0
+      Present: 1

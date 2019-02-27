@@ -16,5 +16,10 @@ namespace UnityOpenApi
         public List<OAOperation> Operations;
         public List<OAServer> Servers;
         public List<OAParameter> Parameters;
+
+        public static string PrepareFileName(string path)
+        {
+            return path.Replace('/', '_');
+        }
     }
 }

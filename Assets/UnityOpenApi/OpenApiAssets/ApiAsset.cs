@@ -29,20 +29,7 @@ namespace UnityOpenApi
 
         public void UpdateWithApiDocument(OpenApiDocument openApiDocument)
         {
-            _servers = openApiDocument.Servers.Select(s => new OAServer
-            {
-                Description = s.Description,
-                Url = s.Url,
-                Variables = s.Variables.ToDictionary(v => v.Key, v => new OAServerVariable()
-                {
-                    Name = v.Key,
-                    Description = v.Value.Description,
-                    Default = v.Value.Default,
-                    Enum = new List<string>(v.Value.Enum),
-                    Current = v.Value.Enum.IndexOf(v.Value.Default)
-                }).Values.ToList()
-            }).ToList();
-
+            _servers = openApiDocument.Servers.Select(s => new OAServer(s)).ToList();
 
             _info = new OAInfo(openApiDocument.Info);
         }

@@ -5,7 +5,8 @@ using UnityEditor;
 
 public class AssetsHelper
 {
-    public static T GetOrCreateScriptableObject<T>(string path, string subpath, string ext = ".asset", bool setDirty = true) where T : ScriptableObject
+    public static T GetOrCreateScriptableObject<T>(string path, string subpath, string ext = ".asset", bool setDirty = true) 
+        where T : ScriptableObject
     {
         if (path[path.Length - 1] != '/') path += "/";
         if (subpath[0] == '/') subpath = subpath.Substring(1);

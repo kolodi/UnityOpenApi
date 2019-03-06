@@ -13,8 +13,125 @@ MonoBehaviour:
   m_Name: _pets
   m_EditorClassIdentifier: 
   ApiAsset: {fileID: 11400000, guid: d8d8582a2c4342949889e466c17358c0, type: 2}
+  Path: /pets
   Summary: 
   Description: 
-  Operations: []
+  Operations:
+  - OperationId: findPets
+    OperationType: 0
+    Deprecated: 0
+    Parameters:
+    - Name: tags
+      Required: 0
+      AllowReserved: 0
+      Explode: 0
+      AllowEmptyValue: 0
+      Deprecated: 0
+      Description: tags to filter by
+      In: 0
+      Reference:
+        Id: 
+        IsPresent: 0
+        ExternalResource: 
+        Type: 0
+        IsExternal: 0
+        IsLocal: 0
+        Reference: 
+      UnresolvedReference: 0
+    - Name: limit
+      Required: 0
+      AllowReserved: 0
+      Explode: 0
+      AllowEmptyValue: 0
+      Deprecated: 0
+      Description: maximum number of results to return
+      In: 0
+      Reference:
+        Id: 
+        IsPresent: 0
+        ExternalResource: 
+        Type: 0
+        IsExternal: 0
+        IsLocal: 0
+        Reference: 
+      UnresolvedReference: 0
+    ParametersValues:
+    - parameter:
+        Name: tags
+        Required: 0
+        AllowReserved: 0
+        Explode: 0
+        AllowEmptyValue: 0
+        Deprecated: 0
+        Description: tags to filter by
+        In: 0
+        Reference:
+          Id: 
+          IsPresent: 0
+          ExternalResource: 
+          Type: 0
+          IsExternal: 0
+          IsLocal: 0
+          Reference: 
+        UnresolvedReference: 0
+      value: 
+    - parameter:
+        Name: limit
+        Required: 0
+        AllowReserved: 0
+        Explode: 0
+        AllowEmptyValue: 0
+        Deprecated: 0
+        Description: maximum number of results to return
+        In: 0
+        Reference:
+          Id: 
+          IsPresent: 0
+          ExternalResource: 
+          Type: 0
+          IsExternal: 0
+          IsLocal: 0
+          Reference: 
+        UnresolvedReference: 0
+      value: 
+    Description: 'Returns all pets from the system that the user has access to
+
+      Nam sed condimentum est. Maecenas tempor sagittis sapien, nec rhoncus sem sagittis
+      sit amet. Aenean at gravida augue, ac iaculis sem. Curabitur odio lorem, ornare
+      eget elementum nec, cursus id lectus. Duis mi turpis, pulvinar ac eros ac, tincidunt
+      varius justo. In hac habitasse platea dictumst. Integer at adipiscing ante,
+      a sagittis ligula. Aenean pharetra tempor ante molestie imperdiet. Vivamus id
+      aliquam diam. Cras quis velit non tortor eleifend sagittis. Praesent at enim
+      pharetra urna volutpat venenatis eget eget mauris. In eleifend fermentum facilisis.
+      Praesent enim enim, gravida ac sodales sed, placerat id erat. Suspendisse lacus
+      dolor, consectetur non augue vel, vehicula interdum libero. Morbi euismod sagittis
+      libero sed lacinia.
+
+
+      Sed tempus felis lobortis leo pulvinar rutrum. Nam mattis velit nisl, eu condimentum
+      ligula luctus nec. Phasellus semper velit eget aliquet faucibus. In a mattis
+      elit. Phasellus vel urna viverra, condimentum lorem id, rhoncus nibh. Ut pellentesque
+      posuere elementum. Sed a varius odio. Morbi rhoncus ligula libero, vel eleifend
+      nunc tristique vitae. Fusce et sem dui. Aenean nec scelerisque tortor. Fusce
+      malesuada accumsan magna vel tempus. Quisque mollis felis eu dolor tristique,
+      sit amet auctor felis gravida. Sed libero lorem, molestie sed nisl in, accumsan
+      tempor nisi. Fusce sollicitudin massa ut lacinia mattis. Sed vel eleifend lorem.
+      Pellentesque vitae felis pretium, pulvinar elit eu, euismod sapien.
+
+'
+    Summary: 
+    Tags: []
+    Servers: []
+    pathAsset: {fileID: 11400000}
+  - OperationId: addPet
+    OperationType: 2
+    Deprecated: 0
+    Parameters: []
+    ParametersValues: []
+    Description: Creates a new pet in the store.  Duplicates are allowed
+    Summary: 
+    Tags: []
+    Servers: []
+    pathAsset: {fileID: 11400000}
   Servers: []
   Parameters: []

@@ -14,7 +14,7 @@ namespace UnityOpenApi
     [CreateAssetMenu(menuName = "Unity Open API/API Assets/API", fileName = "API asset")]
     public class ApiAsset : ScriptableObject
     {
-        public HttpAsset Http { get; set; }
+        public HttpAsset Http;
         [SerializeField]
         [HideInInspector]
         OAServer _currentServer;
@@ -25,26 +25,88 @@ namespace UnityOpenApi
         public List<OAServer> Servers { get => _servers; }
         [SerializeField]
         OAInfo _info;
+        [SerializeField]
+        OAExternalDocs _externalDocs;
 
+        public List<PathItemAsset> pathItemAssets;
 
         public void UpdateWithApiDocument(OpenApiDocument openApiDocument)
         {
             _servers = openApiDocument.Servers.Select(s => new OAServer(s)).ToList();
 
             _info = new OAInfo(openApiDocument.Info);
+
+            _externalDocs = new OAExternalDocs(openApiDocument.ExternalDocs);
+        }
+
+        internal void ExecutePathOperation(OAOperation operation, Action<HttpRequestResult> response)
+        {
+
+            operation.ParametersValues.ForEach(p =>
+            {
+                if(p.parameter.Required && string.IsNullOrEmpty(p.value))
+                {
+                    throw new Exception("Reuired parameter value missed");
+                }
+            });
+
+            var paramsWithValues = operation.ParametersValues.Where(p => !string.IsNullOrEmpty(p.value));
+
+            var queryParams = paramsWithValues.Where(p => p.parameter.In == OAParameterLocation.Query)
+                .ToDictionary(p => p.parameter.Name, p => p.value);
+
+            var pathParams = paramsWithValues.Where(p => p.parameter.In == OAParameterLocation.Path)
+                .ToDictionary(p => p.parameter.Name, p => p.value);
+
+            string operationPath = BuildPathWithParams(operation.pathAsset.Path, pathParams);
+
+            StringBuilder urlSb = new StringBuilder(BaseUrl);
+            urlSb.Append(operationPath);
+            urlSb.Append(Http.BuildQueryString(queryParams));
+
+            string url = urlSb.ToString();
+
+            switch (operation.OperationType)
+            {
+                case AOOperationType.Get:
+                    Http.HttpMono.Get(url, null, response);
+                    break;
+                case AOOperationType.Put:
+                    break;
+                case AOOperationType.Post:
+                    break;
+                case AOOperationType.Delete:
+                    break;
+                case AOOperationType.Options:
+                    break;
+                case AOOperationType.Head:
+                    break;
+                case AOOperationType.Patch:
+                    break;
+                case AOOperationType.Trace:
+                    break;
+                default:
+                    break;
+            }
         }
 
         public string BaseUrl
         {
             get
             {
-                StringBuilder url = new StringBuilder(CurrentServer.Url);
-                CurrentServer.Variables.ForEach(v =>
-                {
-                    url.Replace("{" + v.Name + "}", v.Enum[v.Current]);
-                });
-                return url.ToString();
+                var d = CurrentServer.Variables.ToDictionary(v => v.Name, v => v.Enum[v.Current]);
+                return BuildPathWithParams(CurrentServer.Url, d);
             }
+        }
+
+        public string BuildPathWithParams(string path, Dictionary<string, string> pathParams)
+        {
+            StringBuilder sb = new StringBuilder(path);
+            foreach (var p in pathParams)
+            {
+                sb.Replace("{" + p.Key + "}", p.Value);
+            }
+            return sb.ToString();
         }
 
         #region Testing

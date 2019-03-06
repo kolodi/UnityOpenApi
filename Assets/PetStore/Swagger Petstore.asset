@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d2a7184f8e1aaa42b46af10ce732be1, type: 3}
   m_Name: Swagger Petstore
   m_EditorClassIdentifier: 
+  Http: {fileID: 11400000, guid: 02dd1d39e1c3fcc4c9e42b163921bb8b, type: 2}
   _currentServer:
     Description: 
     Url: http://petstore-demo-endpoint.execute-api.com/petstore
@@ -35,3 +36,9 @@ MonoBehaviour:
       Name: Apache 2.0
       Url: https://www.apache.org/licenses/LICENSE-2.0.html
       Present: 1
+  _externalDocs:
+    Description: 
+    Url: 
+  pathItemAssets:
+  - {fileID: 11400000, guid: 9aa1ad2be4b52e148930bc0b75a1e622, type: 2}
+  - {fileID: 11400000, guid: 86e050ea5e7107a4c99652da82e45aa4, type: 2}

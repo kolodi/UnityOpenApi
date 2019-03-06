@@ -7,6 +7,7 @@ using HttpMono;
 using Microsoft.OpenApi.Models;
 using UnityOpenApi;
 using System.Linq;
+using System.Collections.Generic;
 
 [CreateAssetMenu(menuName = "Unity Open API/Parser")]
 public class OpenApiParser : ScriptableObject
@@ -73,16 +74,20 @@ public class OpenApiParser : ScriptableObject
         apiAsset.UpdateWithApiDocument(openApiDocument);
         apiAsset.Http = http;
 
-        foreach(var p in openApiDocument.Paths)
+        apiAsset.pathItemAssets = new List<PathItemAsset>();
+
+        foreach (var p in openApiDocument.Paths)
         {
-            string fileName = PathItemAsset.PrepareFileName(p.Key);
+            string fileName = p.Key.Replace('/', '_');
             PathItemAsset a = AssetsHelper.GetOrCreateScriptableObject<PathItemAsset>(assetsPath, fileName);
             a.ApiAsset = apiAsset;
-            a.Summary = p.Value.Summary;
-            a.Description = p.Value.Description;
-            
-            a.Servers = p.Value.Servers.Select(s => new OAServer(s)).ToList();
+
+            a.UpdateWithPathData(p.Key, p.Value);
+
+            apiAsset.pathItemAssets.Add(a);
         }
+
+        
 
         AssetDatabase.SaveAssets();
     }

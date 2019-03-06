@@ -13,8 +13,102 @@ MonoBehaviour:
   m_Name: _pets_{id}
   m_EditorClassIdentifier: 
   ApiAsset: {fileID: 11400000, guid: d8d8582a2c4342949889e466c17358c0, type: 2}
+  Path: /pets/{id}
   Summary: 
   Description: 
-  Operations: []
+  Operations:
+  - OperationId: find pet by id
+    OperationType: 0
+    Deprecated: 0
+    Parameters:
+    - Name: id
+      Required: 1
+      AllowReserved: 0
+      Explode: 0
+      AllowEmptyValue: 0
+      Deprecated: 0
+      Description: ID of pet to fetch
+      In: 2
+      Reference:
+        Id: 
+        IsPresent: 0
+        ExternalResource: 
+        Type: 0
+        IsExternal: 0
+        IsLocal: 0
+        Reference: 
+      UnresolvedReference: 0
+    ParametersValues:
+    - parameter:
+        Name: id
+        Required: 1
+        AllowReserved: 0
+        Explode: 0
+        AllowEmptyValue: 0
+        Deprecated: 0
+        Description: ID of pet to fetch
+        In: 2
+        Reference:
+          Id: 
+          IsPresent: 0
+          ExternalResource: 
+          Type: 0
+          IsExternal: 0
+          IsLocal: 0
+          Reference: 
+        UnresolvedReference: 0
+      value: 2
+    Description: Returns a user based on a single ID, if the user does not have access
+      to the pet
+    Summary: 
+    Tags: []
+    Servers: []
+    pathAsset: {fileID: 11400000}
+  - OperationId: deletePet
+    OperationType: 3
+    Deprecated: 0
+    Parameters:
+    - Name: id
+      Required: 1
+      AllowReserved: 0
+      Explode: 0
+      AllowEmptyValue: 0
+      Deprecated: 0
+      Description: ID of pet to delete
+      In: 2
+      Reference:
+        Id: 
+        IsPresent: 0
+        ExternalResource: 
+        Type: 0
+        IsExternal: 0
+        IsLocal: 0
+        Reference: 
+      UnresolvedReference: 0
+    ParametersValues:
+    - parameter:
+        Name: id
+        Required: 1
+        AllowReserved: 0
+        Explode: 0
+        AllowEmptyValue: 0
+        Deprecated: 0
+        Description: ID of pet to delete
+        In: 2
+        Reference:
+          Id: 
+          IsPresent: 0
+          ExternalResource: 
+          Type: 0
+          IsExternal: 0
+          IsLocal: 0
+          Reference: 
+        UnresolvedReference: 0
+      value: 2
+    Description: deletes a single pet based on the ID supplied
+    Summary: 
+    Tags: []
+    Servers: []
+    pathAsset: {fileID: 11400000}
   Servers: []
   Parameters: []

@@ -2,7 +2,7 @@
 
 Open API parser and client generator for Unity
 
-## Concept diagram
+## [Concept diagram](https://docs.google.com/drawings/d/1c1kjdK5TJ_ZHc8onSXXMQAmeI5XNVedIPpmzbtxMUb0/edit?usp=sharing)
 
 ![Concept diagram](https://docs.google.com/drawings/d/e/2PACX-1vQ6CBoYeIMd8nBpVpFzsYqGuJ-uEJyfCSUIWKjCc_XvJu1M7GhKFNqHP_eoJxzDkhxCsJPp6mewKzZA/pub?w=844&amp;h=617)
 

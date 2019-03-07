@@ -2,6 +2,10 @@
 
 Open API parser and client generator for Unity
 
+## Concept diagram
+
+![Concept diagram](https://docs.google.com/drawings/d/1c1kjdK5TJ_ZHc8onSXXMQAmeI5XNVedIPpmzbtxMUb0/edit?usp=sharing)
+
 ## Purpose
 
 Parsing OpenAPI documents and creating reusable Unity assets for easy API consuming in your Unity projects. Designed to work on any target platform.

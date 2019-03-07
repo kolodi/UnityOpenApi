@@ -3,12 +3,20 @@ using UnityEngine.Networking;
 
 namespace HttpMono
 {
+    /// <summary>
+    /// Represent the unified response for a web requests
+    /// </summary>
     public class HttpRequestResult
     {
         public bool Ok { get; }
         public HttpResultError Error { get; }
         public KeyValuePair<long, string> HttpCodeResponse { get; }
         public string Text { get; }
+
+        /// <summary>
+        /// Create Response using UnityWebRequest
+        /// </summary>
+        /// <param name="r">a UnityWebRequest</param>
         public HttpRequestResult(UnityWebRequest r)
         {
             Ok = true;

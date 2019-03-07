@@ -2,9 +2,17 @@
 
 Open API parser and client generator for Unity
 
+## Purpose
+
+Parsing OpenAPI documents and creating reusable Unity assets for easy API consuming in your Unity projects. Designed to work on any target platform.
+
 ## Getting Started
 
-This is the complete unity project containing all necessary assets and code
+Use **Api Parser** ScriptableObject to parse OpenAPI description from file or url. You will be prompted to select the folder where to put the generated API assets. You can select the same folder next time to update assets, this will aslo assure to preserve all existing references to these assets within the project.
+
+There are 2 types of assets generated: 
+* The main API Asset containing all common data and settings
+* The path assets for each individual path in the API, these assets are then references in different places of your project to consume the API.
 
 ### Prerequisites
 
@@ -20,9 +28,11 @@ During the first launch, Unity can take a bit to generate caches.
 
 There are no automated tests for now
 
-## These are unity packages used in the project
+## Third party libraries and packages
 
-* Editor Coroutines - allows you to test web requests in editor without hitting play button
+* [Editor Coroutines](https://docs.unity3d.com/Packages/com.unity.editorcoroutines@0.0/manual/index.html) - allows you to test web requests in editor without hitting play button
+* [JSON.NET for Unity](https://www.parentelement.com/assets/json_net_unity) - parsing your data
+* [OpenAPI.NET](https://github.com/Microsoft/OpenAPI.NET) - parsing Swagger and OpenAPI3 documents (JSON and YAML)
 
 ## Contributing
 
@@ -38,4 +48,4 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Acknowledgments
 
-* Thanks to [OpenAPI.NET](https://github.com/Microsoft/OpenAPI.NET), for OpenAPI documents parser.
+* Inspired by [OpenAPI Tools](https://github.com/OpenAPITools)

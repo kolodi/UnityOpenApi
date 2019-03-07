@@ -12,7 +12,6 @@ using System.Collections.Generic;
 [CreateAssetMenu(menuName = "Unity Open API/Parser")]
 public class OpenApiParser : ScriptableObject
 {
-    [Header("Dependencies")]
     [SerializeField] private HttpAsset http = null;
 
     [SerializeField]

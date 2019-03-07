@@ -38,6 +38,12 @@ There are no automated tests for now
 * [JSON.NET for Unity](https://www.parentelement.com/assets/json_net_unity) - parsing your data
 * [OpenAPI.NET](https://github.com/Microsoft/OpenAPI.NET) - parsing Swagger and OpenAPI3 documents (JSON and YAML)
 
+## Roadmap
+- [ ] support all http methods
+- [ ] authorization assets generation and automatic use for where required
+- [ ] data model generation
+- [ ] better http response wrapper, support for progress callbacks/events
+
 ## Contributing
 
 Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.

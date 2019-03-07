@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Newtonsoft.Json;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -40,12 +41,29 @@ namespace UnityOpenApi
 
         public OAOperation GetOperation(string operationId)
         {
-            return Operations.FirstOrDefault(o => o.OperationId == operationId);
+            return Operations.First(o => o.OperationId == operationId);
+        }
+
+        public OAOperation GetOperation(AOOperationType operationType)
+        {
+            return Operations.First(o => o.OperationType == operationType);
         }
 
         public void ExecuteOperation(OAOperation operation, Action<HttpRequestResult> response)
         {
             ApiAsset.ExecutePathOperation(operation, response);
+        }
+
+        public void ExecuteOperation<T>(OAOperation operation, Action<T> callbackWithData)
+        {
+            ApiAsset.ExecutePathOperation(operation, response =>
+            {
+                if (response.Ok)
+                {
+                    T data = JsonConvert.DeserializeObject<T>(response.Text);
+                    callbackWithData.Invoke(data);
+                }
+            });
         }
     }
 

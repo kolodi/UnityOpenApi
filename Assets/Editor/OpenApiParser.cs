@@ -17,7 +17,7 @@ public class OpenApiParser : ScriptableObject
 
     [SerializeField]
     [HideInInspector]
-    private TextAsset textAsset;
+    private TextAsset textAsset = null;
 
     private string _lastAssetPath = "Assets";
 

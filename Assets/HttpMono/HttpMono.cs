@@ -31,10 +31,14 @@ namespace HttpMono
                 // Request and wait for the desired page.
                 yield return webRequest.SendWebRequest();
                 var result = new HttpRequestResult(webRequest);
-                if(resultCallback != null)
+
+                if(result.Ok == false)
                 {
-                    resultCallback.Invoke(result);
+                    Debug.LogError(result.Error.Message);
                 }
+
+                resultCallback?.Invoke(result);
+
 
 
             }

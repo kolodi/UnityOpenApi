@@ -20,6 +20,10 @@ MonoBehaviour:
   - OperationId: findPets
     OperationType: 0
     Deprecated: 0
+    RequestBody:
+      Description: 
+      Required: 0
+      LastRequestBody: 
     Parameters:
     - Name: tags
       Required: 0
@@ -126,6 +130,10 @@ MonoBehaviour:
   - OperationId: addPet
     OperationType: 2
     Deprecated: 0
+    RequestBody:
+      Description: Pet to add to the store
+      Required: 1
+      LastRequestBody: 
     Parameters: []
     ParametersValues: []
     Description: Creates a new pet in the store.  Duplicates are allowed

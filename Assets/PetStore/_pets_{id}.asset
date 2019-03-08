@@ -20,6 +20,10 @@ MonoBehaviour:
   - OperationId: find pet by id
     OperationType: 0
     Deprecated: 0
+    RequestBody:
+      Description: 
+      Required: 0
+      LastRequestBody: 
     Parameters:
     - Name: id
       Required: 1
@@ -57,7 +61,7 @@ MonoBehaviour:
           IsLocal: 0
           Reference: 
         UnresolvedReference: 0
-      value: 2
+      value: 
     Description: Returns a user based on a single ID, if the user does not have access
       to the pet
     Summary: 
@@ -67,6 +71,10 @@ MonoBehaviour:
   - OperationId: deletePet
     OperationType: 3
     Deprecated: 0
+    RequestBody:
+      Description: 
+      Required: 0
+      LastRequestBody: 
     Parameters:
     - Name: id
       Required: 1
@@ -104,7 +112,7 @@ MonoBehaviour:
           IsLocal: 0
           Reference: 
         UnresolvedReference: 0
-      value: 2
+      value: 
     Description: deletes a single pet based on the ID supplied
     Summary: 
     Tags: []

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityOpenApi;
 using PetStore;
+using Newtonsoft.Json;
 
 public class PetshopConsumeExample : MonoBehaviour
 {
@@ -14,6 +15,9 @@ public class PetshopConsumeExample : MonoBehaviour
     [Header("Get Single Pet")]
     [SerializeField] PathItemAsset pet = null;
     [SerializeField] string petIdToGet = "5";
+
+    [Header("New pet")]
+    [SerializeField] NewPet newPet;
 
     [ContextMenu("Get Pets")]
     public void GetPets()
@@ -38,6 +42,19 @@ public class PetshopConsumeExample : MonoBehaviour
         operation.SetParameterValue("id", petIdToGet);
 
         pet.ExecuteOperation<Pet>(operation, pet =>
+        {
+            Debug.Log("Pet ID: " + pet.Id + ", type: " + pet.Type + ", price: " + pet.Price);
+        });
+    }
+
+    [ContextMenu("Create Pet")]
+    public void CreatePet()
+    {
+        var operation = pets.GetOperation(AOOperationType.Post);
+        var serialized = JsonConvert.SerializeObject(newPet);
+        operation.SetRequestBody(serialized);
+        
+        pets.ExecuteOperation<Pet>(operation, pet =>
         {
             Debug.Log("Pet ID: " + pet.Id + ", type: " + pet.Type + ", price: " + pet.Price);
         });

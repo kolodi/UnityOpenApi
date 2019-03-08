@@ -15,28 +15,28 @@ namespace UnityOpenApi
         public bool Deprecated;
         //public IDictionary<string, OpenApiCallback> Callbacks;
         //public OpenApiResponses Responses;      
-        //public OpenApiRequestBody RequestBody;      
+        public OARequestBody RequestBody;      
         public List<OAParameter> Parameters;
         public List<ParameterValue> ParametersValues;
-        //public OpenApiExternalDocs ExternalDocs;      
+        public OAExternalDocs ExternalDocs;      
         public string Description;
         public string Summary;
         public List<OATag> Tags;
         public List<OAServer> Servers;
         public PathItemAsset pathAsset;
 
-        public OAOperation(OperationType operationType, OpenApiOperation openApiOperation, PathItemAsset pathItemAsset)
+        public OAOperation(OperationType operationType, OpenApiOperation op, PathItemAsset pathItemAsset)
         {
             pathAsset = pathItemAsset;
-            OperationId = openApiOperation.OperationId;
+            OperationId = op.OperationId;
             OperationType = (AOOperationType)operationType;
-            Summary = openApiOperation.Summary;
-            Description = openApiOperation.Description;
-            Deprecated = openApiOperation.Deprecated;
+            Summary = op.Summary;
+            Description = op.Description;
+            Deprecated = op.Deprecated;
 
-            if (openApiOperation.Parameters.Count > 0)
+            if (op.Parameters.Count > 0)
             {
-                Parameters = openApiOperation.Parameters.Select(p => new OAParameter(p)).ToList();
+                Parameters = op.Parameters.Select(p => new OAParameter(p)).ToList();
             }
             else
             {
@@ -45,9 +45,13 @@ namespace UnityOpenApi
 
             ParametersValues = Parameters.Select(p => new ParameterValue { parameter = p }).ToList();
 
-            Servers = openApiOperation.Servers.Select(s => new OAServer(s)).ToList();
+            Servers = op.Servers.Select(s => new OAServer(s)).ToList();
 
-            Tags = openApiOperation.Tags.Select(t => new OATag(t)).ToList();
+            Tags = op.Tags.Select(t => new OATag(t)).ToList();
+
+            RequestBody = new OARequestBody(op.RequestBody);
+
+            ExternalDocs = new OAExternalDocs(op.ExternalDocs);
         }
 
         public void SetParameterValue(string parameterName, string val)
@@ -58,6 +62,11 @@ namespace UnityOpenApi
                 throw new Exception("No parameter with name <" + parameterName + "> found in operation " + OperationId);
             }
             parVal.value = val;
+        }
+
+        public void SetRequestBody(string body)
+        {
+            RequestBody.LastRequestBody = body;
         }
     }
 }

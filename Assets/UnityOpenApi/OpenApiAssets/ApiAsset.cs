@@ -58,6 +58,9 @@ namespace UnityOpenApi
             var pathParams = paramsWithValues.Where(p => p.parameter.In == OAParameterLocation.Path)
                 .ToDictionary(p => p.parameter.Name, p => p.value);
 
+            var headerParams = paramsWithValues.Where(p => p.parameter.In == OAParameterLocation.Header)
+                .ToDictionary(p => p.parameter.Name, p => p.value);
+
             string operationPath = BuildPathWithParams(operation.pathAsset.Path, pathParams);
 
             StringBuilder urlSb = new StringBuilder(BaseUrl);
@@ -69,7 +72,7 @@ namespace UnityOpenApi
             switch (operation.OperationType)
             {
                 case AOOperationType.Get:
-                    Http.HttpMono.Get(url, null, response);
+                    Http.HttpMono.Get(url, headerParams, response);
                     break;
                 case AOOperationType.Put:
                     break;

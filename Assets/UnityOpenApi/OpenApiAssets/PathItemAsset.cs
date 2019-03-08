@@ -25,6 +25,16 @@ namespace UnityOpenApi
         public List<OAServer> Servers;
         public List<OAParameter> Parameters;
 
+        private Dictionary<int, string> cache = new Dictionary<int, string>();
+
+        public bool GetFromCache(OAOperation operation, out string data)
+        {
+            data = string.Empty;
+            if (cache == null) return false;
+
+            return cache.TryGetValue(operation.OperationCurrentHash, out data);
+        }
+
         public void UpdateWithPathData(string path, OpenApiPathItem openApiPathItem)
         {
             Path = path;
@@ -49,22 +59,42 @@ namespace UnityOpenApi
             return Operations.First(o => o.OperationType == operationType);
         }
 
-        public void ExecuteOperation(OAOperation operation, Action<HttpRequestResult> response)
+        public void ExecuteOperation(OAOperation operation, Action<HttpRequestResult> response = null, bool ignoreCache = false)
         {
-            ApiAsset.ExecutePathOperation(operation, response);
+            if(ignoreCache == false)
+            {
+                string data;
+                if(GetFromCache(operation, out data)) {
+                    Debug.Log("From cahce");
+                    response?.Invoke(new HttpRequestResult(data));
+                    return;
+                }
+            }
+
+            ApiAsset.ExecutePathOperation(operation, r =>
+            {
+                if(r.Ok && r.HasText)
+                {
+                    if (cache == null) cache = new Dictionary<int, string>();
+                    cache[operation.OperationCurrentHash] = r.Text;
+                    Debug.Log("responce cached");
+                }
+                response?.Invoke(r);
+            });
         }
 
-        public void ExecuteOperation<T>(OAOperation operation, Action<T> callbackWithData)
+        public void ExecuteOperation<T>(OAOperation operation, Action<T> callbackWithData, bool ignoreCache = false)
         {
-            ApiAsset.ExecutePathOperation(operation, response =>
+            ExecuteOperation(operation, response =>
             {
                 if (response.Ok)
                 {
                     T data = JsonConvert.DeserializeObject<T>(response.Text);
                     callbackWithData.Invoke(data);
                 }
-            });
+            }, ignoreCache);
         }
+
     }
 
 #if UNITY_EDITOR

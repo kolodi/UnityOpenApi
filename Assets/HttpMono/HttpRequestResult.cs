@@ -40,6 +40,14 @@ namespace HttpMono
                 }
             }
         }
+
+        public HttpRequestResult(string result)
+        {
+            Ok = true;
+            HasText = true;
+            Text = result;
+        }
+
     }
 
 }

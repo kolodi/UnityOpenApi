@@ -60,4 +60,11 @@ public class PetshopConsumeExample : MonoBehaviour
             Debug.Log("Pet name: " + pet.name + ", type: " + pet.type + ", price: " + pet.price);
         });
     }
+
+    [ContextMenu("Test Hash")]
+    void TestHash()
+    {
+        var operation = pets.GetOperation(AOOperationType.Post);
+        Debug.Log(operation.OperationCurrentHash);
+    }
 }

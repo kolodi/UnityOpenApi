@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace UnityOpenApi
 {
@@ -24,6 +25,22 @@ namespace UnityOpenApi
         public List<OATag> Tags;
         public List<OAServer> Servers;
         public PathItemAsset pathAsset;
+
+        public int OperationCurrentHash
+        {
+            get
+            {
+                // NOTE: the following does not guarantee the uniqueness of the hash :(
+                int h = OperationType.GetHashCode();
+                h += RequestBody.LastRequestBody.GetHashCode();
+                ParametersValues.ForEach(pm =>
+                {
+                    if (pm.HasValue) h += pm.value.GetHashCode();
+                });
+
+                return h;
+            }
+        }
 
         public OAOperation(OperationType operationType, OpenApiOperation op, PathItemAsset pathItemAsset)
         {

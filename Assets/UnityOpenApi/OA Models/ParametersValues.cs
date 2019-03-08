@@ -7,5 +7,12 @@ namespace UnityOpenApi
     {
         public OAParameter parameter;
         public string value;
+        public bool HasValue
+        {
+            get
+            {
+                return string.IsNullOrEmpty(value) == false;
+            }
+        }
     }
 }

@@ -27,8 +27,8 @@ namespace UnityOpenApi
         OAInfo _info;
         [SerializeField]
         OAExternalDocs _externalDocs;
-
         public List<PathItemAsset> pathItemAssets;
+
 
         public void UpdateWithApiDocument(OpenApiDocument openApiDocument)
         {
@@ -44,7 +44,7 @@ namespace UnityOpenApi
 
             operation.ParametersValues.ForEach(p =>
             {
-                if(p.parameter.Required && string.IsNullOrEmpty(p.value))
+                if (p.parameter.Required && string.IsNullOrEmpty(p.value))
                 {
                     throw new Exception("Reuired parameter value missed");
                 }

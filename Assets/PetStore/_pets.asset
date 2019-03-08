@@ -78,7 +78,7 @@ MonoBehaviour:
           IsLocal: 0
           Reference: 
         UnresolvedReference: 0
-      value: 
+      value: cat
     - parameter:
         Name: limit
         Required: 0
@@ -97,7 +97,10 @@ MonoBehaviour:
           IsLocal: 0
           Reference: 
         UnresolvedReference: 0
-      value: 
+      value: 3
+    ExternalDocs:
+      Description: 
+      Url: 
     Description: 'Returns all pets from the system that the user has access to
 
       Nam sed condimentum est. Maecenas tempor sagittis sapien, nec rhoncus sem sagittis
@@ -133,9 +136,12 @@ MonoBehaviour:
     RequestBody:
       Description: Pet to add to the store
       Required: 1
-      LastRequestBody: 
+      LastRequestBody: '{"name":"Birdy","type":"bird","price":157.0}'
     Parameters: []
     ParametersValues: []
+    ExternalDocs:
+      Description: 
+      Url: 
     Description: Creates a new pet in the store.  Duplicates are allowed
     Summary: 
     Tags: []

@@ -190,9 +190,9 @@ MonoBehaviour:
   pet: {fileID: 11400000, guid: 86e050ea5e7107a4c99652da82e45aa4, type: 2}
   petIdToGet: 5
   newPet:
-    Name: Birdy
-    Type: 3
-    Price: 0
+    name: Birdy
+    type: 3
+    price: 157
 --- !u!4 &929404285
 Transform:
   m_ObjectHideFlags: 0

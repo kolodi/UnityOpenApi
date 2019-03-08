@@ -17,7 +17,7 @@ public class PetshopConsumeExample : MonoBehaviour
     [SerializeField] string petIdToGet = "5";
 
     [Header("New pet")]
-    [SerializeField] NewPet newPet;
+    [SerializeField] NewPet newPet = null;
 
     [ContextMenu("Get Pets")]
     public void GetPets()
@@ -30,7 +30,7 @@ public class PetshopConsumeExample : MonoBehaviour
         {
             pets.ForEach(pet =>
             {
-                Debug.Log("Pet ID: " + pet.Id + ", type: " + pet.Type + ", price: " + pet.Price);
+                Debug.Log("Pet ID: " + pet.id + ", type: " + pet.type + ", price: " + pet.price);
             });
         });
     }
@@ -43,7 +43,7 @@ public class PetshopConsumeExample : MonoBehaviour
 
         pet.ExecuteOperation<Pet>(operation, pet =>
         {
-            Debug.Log("Pet ID: " + pet.Id + ", type: " + pet.Type + ", price: " + pet.Price);
+            Debug.Log("Pet ID: " + pet.id + ", type: " + pet.type + ", price: " + pet.price);
         });
     }
 
@@ -54,9 +54,10 @@ public class PetshopConsumeExample : MonoBehaviour
         var serialized = JsonConvert.SerializeObject(newPet);
         operation.SetRequestBody(serialized);
         
-        pets.ExecuteOperation<Pet>(operation, pet =>
+        pets.ExecuteOperation<NewPetResponse>(operation, r =>
         {
-            Debug.Log("Pet ID: " + pet.Id + ", type: " + pet.Type + ", price: " + pet.Price);
+            var pet = r.pet;
+            Debug.Log("Pet name: " + pet.name + ", type: " + pet.type + ", price: " + pet.price);
         });
     }
 }

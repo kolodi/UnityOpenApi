@@ -77,6 +77,11 @@ namespace UnityOpenApi
                 case AOOperationType.Put:
                     break;
                 case AOOperationType.Post:
+                    if(operation.RequestBody.Required && string.IsNullOrEmpty(operation.RequestBody.LastRequestBody))
+                    {
+                        throw new Exception("Missing request body");
+                    }
+                    Http.HttpMono.Post(url, operation.RequestBody.LastRequestBody, headerParams, response);
                     break;
                 case AOOperationType.Delete:
                     break;

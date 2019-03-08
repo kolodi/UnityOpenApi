@@ -9,6 +9,7 @@ namespace HttpMono
     public class HttpRequestResult
     {
         public bool Ok { get; }
+        public bool HasText { get; }
         public HttpResultError Error { get; }
         public KeyValuePair<long, string> HttpCodeResponse { get; }
         public string Text { get; }
@@ -28,12 +29,15 @@ namespace HttpMono
             if (!Ok)
             {
                 Error = new HttpResultError(r);
-                return;
             }
 
             if (r.downloadHandler != null)
             {
-                Text = r.downloadHandler.text;
+                if (string.IsNullOrEmpty(r.downloadHandler.text) == false)
+                {
+                    HasText = true;
+                    Text = r.downloadHandler.text;
+                }
             }
         }
     }

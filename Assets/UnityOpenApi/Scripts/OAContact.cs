@@ -1,5 +1,4 @@
-﻿using Microsoft.OpenApi.Models;
-using System;
+﻿using System;
 using UnityEditor;
 
 namespace UnityOpenApi

@@ -49,3 +49,7 @@ sysinfo.txt
 
 # Crashlytics generated file
 crashlytics-build.properties
+
+# Custom
+[Aa]ssets/Apis
+[Aa]ssets/Apis.meta

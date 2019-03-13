@@ -1,8 +1,7 @@
 {
     "name": "UnityOpenApi",
     "references": [
-        "HttpMono",
-        "PetStore"
+        "HttpMono"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],

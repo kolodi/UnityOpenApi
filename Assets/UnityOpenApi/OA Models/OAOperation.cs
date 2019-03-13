@@ -32,7 +32,10 @@ namespace UnityOpenApi
             {
                 // NOTE: the following does not guarantee the uniqueness of the hash :(
                 int h = OperationType.GetHashCode();
-                h += RequestBody.LastRequestBody.GetHashCode();
+
+                if (string.IsNullOrEmpty(RequestBody.LastRequestBody) == false)
+                    h += RequestBody.LastRequestBody.GetHashCode();
+
                 ParametersValues.ForEach(pm =>
                 {
                     if (pm.HasValue) h += pm.value.GetHashCode();

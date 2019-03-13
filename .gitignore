@@ -53,3 +53,5 @@ crashlytics-build.properties
 # Custom
 [Aa]ssets/Apis
 [Aa]ssets/Apis.meta
+[Aa]ssets/Experiments
+[Aa]ssets/Experiments.meta

@@ -8,17 +8,6 @@ namespace UnityOpenApi
     {
         public string Name;
         public string Url;
-        public bool Present = true;
-
-        public OALicense(OpenApiLicense openApiLicense)
-        {
-            if(openApiLicense==null)
-            {
-                Present = false;
-                return;
-            }
-            Name = openApiLicense.Name;
-            Url = openApiLicense.Url.ToString();
-        }
+        public bool Present;
     }
 }

@@ -35,20 +35,6 @@ namespace UnityOpenApi
             return cache.TryGetValue(operation.OperationCurrentHash, out data);
         }
 
-        public void UpdateWithPathData(string path, OpenApiPathItem openApiPathItem)
-        {
-            Path = path;
-
-            Summary = openApiPathItem.Summary;
-            Description = openApiPathItem.Description;
-
-            Parameters = openApiPathItem.Parameters.Select(p => new OAParameter(p)).ToList();
-
-            Operations = openApiPathItem.Operations.Select(o => new OAOperation(o.Key, o.Value, this)).ToList();
-            Servers = openApiPathItem.Servers.Select(s => new OAServer(s)).ToList();
-
-        }
-
         public OAOperation GetOperation(string operationId)
         {
             return Operations.First(o => o.OperationId == operationId);

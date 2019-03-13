@@ -64,31 +64,216 @@ public class OpenApiParser : ScriptableObject
         return stream;
     }
 
-    public void GenerateAssets(OpenApiDocument openApiDocument)
+    public void GenerateAssets(OpenApiDocument doc)
     {
         string assetsPath = EditorUtility.OpenFolderPanel("Select assets folder", _lastAssetPath, "");
         _lastAssetPath = assetsPath;
         assetsPath = assetsPath.Substring(assetsPath.IndexOf("Assets"));
-        ApiAsset apiAsset = AssetsHelper.GetOrCreateScriptableObject<ApiAsset>(assetsPath, openApiDocument.Info.Title);
-        apiAsset.UpdateWithApiDocument(openApiDocument);
+        ApiAsset apiAsset = AssetsHelper.GetOrCreateScriptableObject<ApiAsset>(assetsPath, doc.Info.Title);
+
+        #region ApiAsset update
         apiAsset.Http = http;
+        apiAsset.info = new OAInfo()
+        {
+            Title = doc.Info.Title,
+            Description = doc.Info.Description,
+            Version = doc.Info.Version,
+            TermsOfService = doc.Info.TermsOfService == null ? "" : doc.Info.TermsOfService.ToString(),
+            Contact = CreateContact(doc.Info.Contact),
+            License = CreateLicence(doc.Info.License),
+        };
+
+        apiAsset.externalDocs = CreateExternalDocs(doc.ExternalDocs);
+
+        apiAsset.servers = doc.Servers.Select(s => CreateAOServer(s)).ToList();
+
 
         apiAsset.pathItemAssets = new List<PathItemAsset>();
 
-        foreach (var p in openApiDocument.Paths)
+        #endregion
+
+        foreach (var p in doc.Paths)
         {
             string fileName = p.Key.Replace('/', '_');
             PathItemAsset a = AssetsHelper.GetOrCreateScriptableObject<PathItemAsset>(assetsPath, fileName);
             a.ApiAsset = apiAsset;
 
-            a.UpdateWithPathData(p.Key, p.Value);
+            #region path item update
+
+
+            a.Path = p.Key;
+
+            a.Summary = p.Value.Summary;
+            a.Description = p.Value.Description;
+            a.Parameters = p.Value.Parameters.Select(par => CreateAOParameter(par)).ToList();
+            a.Operations = p.Value.Operations.Select(o => CreateAOOperation(o.Key, o.Value, a)).ToList();
+            a.Servers = p.Value.Servers.Select(s => CreateAOServer(s)).ToList();
+
+            #endregion
 
             apiAsset.pathItemAssets.Add(a);
         }
 
-        
+
 
         AssetDatabase.SaveAssets();
+    }
+
+    private OAParameter CreateAOParameter(OpenApiParameter openApiParameter)
+    {
+        return new OAParameter()
+        {
+            Name = openApiParameter.Name,
+            Required = openApiParameter.Required,
+            AllowReserved = openApiParameter.AllowReserved,
+            Explode = openApiParameter.Explode,
+            AllowEmptyValue = openApiParameter.AllowEmptyValue,
+            Deprecated = openApiParameter.Deprecated,
+            Description = openApiParameter.Description,
+            UnresolvedReference = openApiParameter.UnresolvedReference,
+
+            In = (OAParameterLocation)openApiParameter.In,
+
+            Reference = CreateReference(openApiParameter.Reference),
+        };
+    }
+
+    private OAOperation CreateAOOperation(OperationType operationType, OpenApiOperation op, PathItemAsset pathItemAsset)
+    {
+        var operation = new OAOperation()
+        {
+            pathAsset = pathItemAsset,
+            OperationId = op.OperationId,
+            OperationType = (AOOperationType)operationType,
+            Summary = op.Summary,
+            Description = op.Description,
+            Deprecated = op.Deprecated,
+
+            Parameters = op.Parameters.Count > 0 ?
+            op.Parameters.Select(p => CreateAOParameter(p)).ToList() :
+            pathItemAsset.Parameters,
+
+
+            Servers = op.Servers.Select(s => CreateAOServer(s)).ToList(),
+
+            Tags = op.Tags.Select(t => CreateOATag(t)).ToList(),
+
+            RequestBody = CreateOARequestBody(op.RequestBody),
+
+            ExternalDocs = CreateExternalDocs(op.ExternalDocs),
+        };
+        operation.ParametersValues = operation.Parameters.Select(p => new ParameterValue { parameter = p }).ToList();
+
+        return operation;
+    }
+
+    private OATag CreateOATag(OpenApiTag openApiTag)
+    {
+        return new OATag()
+        {
+            Name = openApiTag.Name,
+            Description = openApiTag.Description,
+            ExternalDocs = CreateExternalDocs(openApiTag.ExternalDocs),
+        };
+    }
+
+    public OARequestBody CreateOARequestBody(OpenApiRequestBody requestBody)
+    {
+        if (requestBody == null) return new OARequestBody();
+
+        return new OARequestBody()
+        {
+            Description = requestBody.Description,
+            Required = requestBody.Required,
+        };
+    }
+
+    private OAReference CreateReference(OpenApiReference openApiReference)
+    {
+        if (openApiReference == null) return new OAReference();
+
+        return new OAReference()
+        {
+            IsPresent = true,
+            ExternalResource = openApiReference.ExternalResource,
+            Type = (OAReferenceType)openApiReference.Type,
+            Id = openApiReference.Id,
+            IsExternal = openApiReference.IsExternal,
+            IsLocal = openApiReference.IsLocal,
+            Reference = string.IsNullOrEmpty(openApiReference.ReferenceV2)
+            ? openApiReference.ReferenceV3 : openApiReference.ReferenceV2,
+        };
+    }
+
+    private OAContact CreateContact(OpenApiContact openApiContact)
+    {
+        if (openApiContact == null)
+            return new OAContact();
+
+        return new OAContact()
+        {
+            Url = openApiContact.Url.ToString(),
+            Name = openApiContact.Name,
+            Email = openApiContact.Email,
+            Present = true,
+        };
+    }
+
+    private OALicense CreateLicence(OpenApiLicense openApiLicense)
+    {
+        if (openApiLicense == null) return new OALicense();
+
+        return new OALicense()
+        {
+            Name = openApiLicense.Name,
+            Url = openApiLicense.Url.ToString(),
+            Present = true,
+        };
+    }
+
+    private OAExternalDocs CreateExternalDocs(OpenApiExternalDocs ExternalDocs)
+    {
+        if (ExternalDocs != null)
+        {
+            return new OAExternalDocs()
+            {
+                Description = ExternalDocs.Description,
+                Url = ExternalDocs.Url.ToString(),
+            };
+        }
+        return new OAExternalDocs();
+    }
+
+    private OAServer CreateAOServer(OpenApiServer s)
+    {
+        var server = new OAServer()
+        {
+            Description = s.Description,
+            Url = s.Url,
+            Variables = s.Variables.ToDictionary(v => v.Key, v => new OAServerVariable()
+            {
+                Name = v.Key,
+                Description = v.Value.Description,
+                Default = v.Value.Default,
+                Enum = new List<string>(v.Value.Enum),
+                Current = v.Value.Enum.IndexOf(v.Value.Default)
+            }).Values.ToList(),
+        };
+        server.Variables.ForEach(v =>
+        {
+            v.Default = v.Default.Trim('/');
+            if (v.Enum.Count == 0)
+            {
+                v.Enum = new List<string> { v.Default };
+            }
+            else
+            {
+                // trim all slashes for variants
+                v.Enum = new List<string>(v.Enum.Select(e => e.Trim('/')));
+            }
+            v.Current = 0;
+        });
+        return server;
     }
 
 }

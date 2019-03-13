@@ -42,35 +42,6 @@ namespace UnityOpenApi
             }
         }
 
-        public OAOperation(OperationType operationType, OpenApiOperation op, PathItemAsset pathItemAsset)
-        {
-            pathAsset = pathItemAsset;
-            OperationId = op.OperationId;
-            OperationType = (AOOperationType)operationType;
-            Summary = op.Summary;
-            Description = op.Description;
-            Deprecated = op.Deprecated;
-
-            if (op.Parameters.Count > 0)
-            {
-                Parameters = op.Parameters.Select(p => new OAParameter(p)).ToList();
-            }
-            else
-            {
-                Parameters = pathItemAsset.Parameters;
-            }
-
-            ParametersValues = Parameters.Select(p => new ParameterValue { parameter = p }).ToList();
-
-            Servers = op.Servers.Select(s => new OAServer(s)).ToList();
-
-            Tags = op.Tags.Select(t => new OATag(t)).ToList();
-
-            RequestBody = new OARequestBody(op.RequestBody);
-
-            ExternalDocs = new OAExternalDocs(op.ExternalDocs);
-        }
-
         public void SetParameterValue(string parameterName, string val)
         {
             var parVal = ParametersValues.FirstOrDefault(p => p.parameter.Name == parameterName);

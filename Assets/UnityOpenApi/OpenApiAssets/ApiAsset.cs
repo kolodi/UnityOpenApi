@@ -21,23 +21,12 @@ namespace UnityOpenApi
         public OAServer CurrentServer { get => _currentServer; set => _currentServer = value; }
         [SerializeField]
         [HideInInspector]
-        List<OAServer> _servers;
-        public List<OAServer> Servers { get => _servers; }
+        public List<OAServer> servers;
         [SerializeField]
-        OAInfo _info;
+        public OAInfo info;
         [SerializeField]
-        OAExternalDocs _externalDocs;
+        public OAExternalDocs externalDocs;
         public List<PathItemAsset> pathItemAssets;
-
-
-        public void UpdateWithApiDocument(OpenApiDocument openApiDocument)
-        {
-            _servers = openApiDocument.Servers.Select(s => new OAServer(s)).ToList();
-
-            _info = new OAInfo(openApiDocument.Info);
-
-            _externalDocs = new OAExternalDocs(openApiDocument.ExternalDocs);
-        }
 
         internal void ExecutePathOperation(OAOperation operation, Action<HttpRequestResult> response)
         {
@@ -136,11 +125,11 @@ namespace UnityOpenApi
             base.OnInspectorGUI();
 
             var apiAsset = target as ApiAsset;
-            var _servers = apiAsset.Servers.Select(s => s.Url.Replace('/', '+')).ToArray();
+            var _servers = apiAsset.servers.Select(s => s.Url.Replace('/', '+')).ToArray();
             GUILayout.Label("Current server: ");
             _currentServerIndex = EditorGUILayout.Popup(_currentServerIndex, _servers);
 
-            apiAsset.CurrentServer = apiAsset.Servers[_currentServerIndex];
+            apiAsset.CurrentServer = apiAsset.servers[_currentServerIndex];
 
             if (apiAsset.CurrentServer.Variables != null)
             {

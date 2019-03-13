@@ -18,21 +18,5 @@ namespace UnityOpenApi
         public OAReference Reference;
         public bool UnresolvedReference;
         //public IDictionary<string, OpenApiMediaType> Content;
-
-        public OAParameter (OpenApiParameter openApiParameter)
-        {
-            Name = openApiParameter.Name;
-            Required = openApiParameter.Required;
-            AllowReserved = openApiParameter.AllowReserved;
-            Explode = openApiParameter.Explode;
-            AllowEmptyValue = openApiParameter.AllowEmptyValue;
-            Deprecated = openApiParameter.Deprecated;
-            Description = openApiParameter.Description;
-            UnresolvedReference = openApiParameter.UnresolvedReference;
-
-            In = (OAParameterLocation)openApiParameter.In;
-
-            Reference = new OAReference(openApiParameter.Reference);
-        }
     }
 }

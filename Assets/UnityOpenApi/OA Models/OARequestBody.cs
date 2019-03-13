@@ -10,12 +10,5 @@ namespace UnityOpenApi
         public bool Required;
 
         public string LastRequestBody;
-
-        public OARequestBody(OpenApiRequestBody requestBody)
-        {
-            if (requestBody == null) return;
-            Description = requestBody.Description;
-            Required = requestBody.Required;
-        }
     }
 }

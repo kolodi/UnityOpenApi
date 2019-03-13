@@ -24,6 +24,20 @@ namespace UnityOpenApi
                 Enum = new List<string>(v.Value.Enum),
                 Current = v.Value.Enum.IndexOf(v.Value.Default)
             }).Values.ToList();
+
+            Variables.ForEach(v =>
+            {
+                v.Default = v.Default.Trim('/');
+                if (v.Enum.Count == 0)
+                {
+                    v.Enum = new List<string> { v.Default };
+                } else
+                {
+                    // trim all slashes for variants
+                    v.Enum = new List<string>(v.Enum.Select(e => e.Trim('/')));
+                }
+                v.Current = 0;
+            });
         }
     }
 }

@@ -39,10 +39,7 @@ There are no automated tests for now
 * [OpenAPI.NET](https://github.com/Microsoft/OpenAPI.NET) - parsing Swagger and OpenAPI3 documents (JSON and YAML)
 
 ## Roadmap
-- [ ] support all http methods
-- [ ] authorization assets generation and automatic use for where required
-- [ ] data model generation
-- [ ] better http response wrapper, support for progress callbacks/events
+[Trello](https://trello.com/b/OUMtKpEA)
 
 ## Contributing
 

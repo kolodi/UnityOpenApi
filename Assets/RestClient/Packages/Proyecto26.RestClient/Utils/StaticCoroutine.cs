@@ -5,8 +5,6 @@ namespace Proyecto26
 {
     public static class StaticCoroutine
     {
-        private class CoroutineHolder : MonoBehaviour { }
-
         private static CoroutineHolder _runner;
         private static CoroutineHolder runner
         {
@@ -14,9 +12,15 @@ namespace Proyecto26
             {
                 if (_runner == null)
                 {
-                    _runner = new GameObject("Static Coroutine RestClient").AddComponent<CoroutineHolder>();
-                    if (Application.isPlaying)
-                        Object.DontDestroyOnLoad(_runner);
+                    _runner = Object.FindObjectOfType<CoroutineHolder>();
+                    if (_runner == null)
+                    {
+                        _runner = new GameObject("Coroutine Holder").AddComponent<CoroutineHolder>();
+                        if (Application.isPlaying)
+                        {
+                            Object.DontDestroyOnLoad(_runner);
+                        }
+                    }
                 }
                 return _runner;
             }

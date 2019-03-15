@@ -12,5 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a06f7085ffbc11b4caab468e88e66f90, type: 3}
   m_Name: Api Parser
   m_EditorClassIdentifier: 
-  http: {fileID: 11400000, guid: 02dd1d39e1c3fcc4c9e42b163921bb8b, type: 2}
   textAsset: {fileID: 4900000, guid: a229ccf01b02ff343a6fb3ad1a40846a, type: 3}

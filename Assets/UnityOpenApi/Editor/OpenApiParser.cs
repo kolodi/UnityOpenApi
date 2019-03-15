@@ -3,7 +3,6 @@ using UnityEditor;
 using Microsoft.OpenApi.Readers;
 using System.IO;
 using Microsoft.OpenApi.Validations;
-using HttpMono;
 using Microsoft.OpenApi.Models;
 using UnityOpenApi;
 using System.Linq;
@@ -39,10 +38,7 @@ public class OpenApiParser : ScriptableObject
 
     public void ParseFromUrl(string url)
     {
-        RestClient.Get(new RequestHelper()
-        {
-            Uri = url
-        })
+        RestClient.Get(url)
         .Then(result =>
         {
             var doc = Parse(result.Text);

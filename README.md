@@ -37,6 +37,7 @@ There are no automated tests for now
 * [Editor Coroutines](https://docs.unity3d.com/Packages/com.unity.editorcoroutines@0.0/manual/index.html) - allows you to test web requests in editor without hitting play button
 * [JSON.NET for Unity](https://www.parentelement.com/assets/json_net_unity) - parsing your data
 * [OpenAPI.NET](https://github.com/Microsoft/OpenAPI.NET) - parsing Swagger and OpenAPI3 documents (JSON and YAML)
+* [RestClient](https://github.com/proyecto26/RestClient) - Multiplatform promise based Http Handler
 
 ## Roadmap
 - [x] support all http methods

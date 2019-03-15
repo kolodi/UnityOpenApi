@@ -8,12 +8,11 @@ using Microsoft.OpenApi.Models;
 using UnityOpenApi;
 using System.Linq;
 using System.Collections.Generic;
+using Proyecto26;
 
 [CreateAssetMenu(menuName = "Unity Open API/Parser")]
 public class OpenApiParser : ScriptableObject
 {
-    [SerializeField] private HttpAsset http = null;
-
     [SerializeField]
     [HideInInspector]
     private TextAsset textAsset = null;
@@ -22,10 +21,11 @@ public class OpenApiParser : ScriptableObject
 
     public void ParseFromAsset()
     {
-        Parse(textAsset.text);
+        var doc = Parse(textAsset.text);
+        GenerateAssets(doc);
     }
 
-    public void Parse(string json)
+    public OpenApiDocument Parse(string json)
     {
         var stream = CreateStream(json);
         var parsed = new OpenApiStreamReader(new OpenApiReaderSettings
@@ -34,22 +34,21 @@ public class OpenApiParser : ScriptableObject
             RuleSet = ValidationRuleSet.GetDefaultRuleSet()
         }).Read(stream, out var openApiDiagnostic);
         Debug.Log("Successfully parsed API Description: " + parsed.Info.Title);
-        GenerateAssets(parsed);
+        return parsed;
     }
 
     public void ParseFromUrl(string url)
     {
-        http.HttpMono.Get(url, null, result =>
+        RestClient.Get(new RequestHelper()
         {
-            if (result.Ok)
-            {
-                Parse(result.Text);
-            }
-            else
-            {
-                Debug.Log(result.Error.Message);
-            }
-        });
+            Uri = url
+        })
+        .Then(result =>
+        {
+            var doc = Parse(result.Text);
+            GenerateAssets(doc);
+        })
+       .Catch(err => Debug.LogError(err.Message));
     }
 
     private MemoryStream CreateStream(string text)
@@ -72,7 +71,6 @@ public class OpenApiParser : ScriptableObject
         ApiAsset apiAsset = AssetsHelper.GetOrCreateScriptableObject<ApiAsset>(assetsPath, doc.Info.Title);
 
         #region ApiAsset update
-        apiAsset.Http = http;
         apiAsset.info = new OAInfo()
         {
             Title = doc.Info.Title,

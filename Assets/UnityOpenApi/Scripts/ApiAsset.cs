@@ -1,9 +1,10 @@
-﻿using HttpMono;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System;
 using System.Text;
+using Proyecto26;
+using RSG;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -13,7 +14,6 @@ namespace UnityOpenApi
     [CreateAssetMenu(menuName = "Unity Open API/API Assets/API", fileName = "API asset")]
     public class ApiAsset : ScriptableObject
     {
-        public HttpAsset Http;
         [SerializeField]
         [HideInInspector]
         OAServer _currentServer;
@@ -27,21 +27,18 @@ namespace UnityOpenApi
         public OAExternalDocs externalDocs;
         public List<PathItemAsset> pathItemAssets;
 
-        internal void ExecuteOpration(OAOperation operation)
+        internal IPromise<ResponseHelper> ExecuteOperation(OAOperation operation)
         {
+            var errorPromise = new Promise<ResponseHelper>();
 
-        }
-
-        internal void ExecutePathOperation(OAOperation operation, Action<HttpRequestResult> response)
-        {
-
-            operation.ParametersValues.ForEach(p =>
+            foreach(var p in operation.ParametersValues)
             {
                 if (p.parameter.Required && string.IsNullOrEmpty(p.value))
                 {
-                    throw new Exception("Reuired parameter value missed");
+                    errorPromise.Reject(new Exception("Reuired parameter value missed"));
+                    return errorPromise;
                 }
-            });
+            }
 
             var paramsWithValues = operation.ParametersValues.Where(p => !string.IsNullOrEmpty(p.value));
 
@@ -58,39 +55,20 @@ namespace UnityOpenApi
 
             StringBuilder urlSb = new StringBuilder(BaseUrl);
             urlSb.Append(operationPath);
-            urlSb.Append(Http.BuildQueryString(queryParams));
+            urlSb.Append(BuildQueryString(queryParams));
 
             string url = urlSb.ToString();
 
-            switch (operation.OperationType)
+            RequestHelper requestOptions = new RequestHelper()
             {
-                case AOOperationType.Get:
-                    Http.HttpMono.Get(url, headerParams, response);
-                    break;
-                case AOOperationType.Put:
-                    break;
-                case AOOperationType.Post:
-                    if(operation.RequestBody.Required && string.IsNullOrEmpty(operation.RequestBody.LastRequestBody))
-                    {
-                        throw new Exception("Missing request body");
-                    }
-                    Http.HttpMono.Post(url, operation.RequestBody.LastRequestBody, headerParams, response);
-                    break;
-                case AOOperationType.Delete:
-                    break;
-                case AOOperationType.Options:
-                    break;
-                case AOOperationType.Head:
-                    break;
-                case AOOperationType.Patch:
-                    break;
-                case AOOperationType.Trace:
-                    break;
-                default:
-                    break;
-            }
+                Method = operation.OperationType.ToString(),
+                Headers = headerParams,
+                Uri = url,
+                EnableDebug = true
+            };
+            return RestClient.Request(requestOptions);
         }
-
+        
         public string BaseUrl
         {
             get
@@ -110,13 +88,30 @@ namespace UnityOpenApi
             return sb.ToString();
         }
 
-        #region Testing
-        [ContextMenu("Test Base Url")]
-        void TestBaseUrl()
+        public string BuildQueryString(Dictionary<string, string> parameters)
         {
-            Debug.Log(BaseUrl);
+            if (parameters.Count == 0)
+            {
+                return string.Empty;
+            }
+            StringBuilder sb = new StringBuilder("?");
+
+            foreach (var par in parameters)
+            {
+
+                sb.AppendFormat("{0}={1}&", par.Key, par.Value);
+
+            }
+
+            string result = sb.ToString();
+            int lastAnd = result.LastIndexOf('&');
+            if (lastAnd > 3)
+            {
+                result = result.Remove(lastAnd);
+            }
+
+            return result;
         }
-        #endregion
     }
 
 #if UNITY_EDITOR

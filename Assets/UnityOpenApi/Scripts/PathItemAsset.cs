@@ -1,10 +1,11 @@
-﻿using HttpMono;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Newtonsoft.Json;
+using RSG;
+using Proyecto26;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -24,16 +25,6 @@ namespace UnityOpenApi
         public List<OAServer> Servers;
         public List<OAParameter> Parameters;
 
-        private Dictionary<int, string> cache = new Dictionary<int, string>();
-
-        public bool GetFromCache(OAOperation operation, out string data)
-        {
-            data = string.Empty;
-            if (cache == null) return false;
-
-            return cache.TryGetValue(operation.OperationCurrentHash, out data);
-        }
-
         public OAOperation GetOperation(string operationId)
         {
             return Operations.First(o => o.OperationId == operationId);
@@ -44,40 +35,68 @@ namespace UnityOpenApi
             return Operations.First(o => o.OperationType == operationType);
         }
 
-        public void ExecuteOperation(OAOperation operation, Action<HttpRequestResult> response = null, bool ignoreCache = false)
+        /// <summary>
+        /// To be used only for string type responses, like JSON.
+        /// The string response is cached by default.
+        /// </summary>
+        /// <param name="operation">API operation to execute</param>
+        /// <returns>A promise with a string response</returns>
+        public IPromise<string> ExecuteOperation(OAOperation operation)
         {
-            if(ignoreCache == false)
+            var promise = new Promise<string>();
+
+            if (operation.ignoreCache == false)
             {
                 string data;
-                if(GetFromCache(operation, out data)) {
+                if (operation.GetFromCache(out data))
+                {
                     Debug.Log("From cahce");
-                    response?.Invoke(new HttpRequestResult(data));
-                    return;
+                    promise.Resolve(data);
+                    return promise;
                 }
             }
 
-            ApiAsset.ExecutePathOperation(operation, r =>
-            {
-                if(r.Ok && r.HasText)
+
+            ApiAsset.ExecuteOperation(operation)
+                .Then(res =>
                 {
-                    if (cache == null) cache = new Dictionary<int, string>();
-                    cache[operation.OperationCurrentHash] = r.Text;
-                    Debug.Log("responce cached");
-                }
-                response?.Invoke(r);
-            });
+                    if (res.Error == null)
+                    {
+                        operation.Cache = res.Text;
+                    }
+                    promise.Resolve(res.Text);
+                })
+                .Catch(err => promise.Reject(err));
+
+            return promise;
         }
 
-        public void ExecuteOperation<T>(OAOperation operation, Action<T> callbackWithData, bool ignoreCache = false)
+        /// <summary>
+        /// Use this for not JSON responses like binary textures or asset bundles
+        /// </summary>
+        /// <param name="operation">API operation to execute</param>
+        /// <returns>A promise with complete response wrapper containing UnityWebRequest with all data</returns>
+        public IPromise<ResponseHelper> ExecuteOperationRaw(OAOperation operation)
         {
-            ExecuteOperation(operation, response =>
-            {
-                if (response.Ok)
-                {
-                    T data = JsonConvert.DeserializeObject<T>(response.Text);
-                    callbackWithData.Invoke(data);
-                }
-            }, ignoreCache);
+            return ApiAsset.ExecuteOperation(operation);
+        }
+
+        /// <summary>
+        /// Use this method for JSON data response only.
+        /// The string response is cached by default.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="operation">API operation to execute</param>
+        /// <returns>A promise with automatically parsed data from JSON</returns>
+        public IPromise<T> ExecuteOperation<T>(OAOperation operation)
+        {
+            var promise = new Promise<T>();
+
+            ExecuteOperation(operation)
+                .Then(res => promise.Resolve(JsonConvert.DeserializeObject<T>(res)))
+                .Catch(err => promise.Reject(err));
+
+            return promise;
         }
 
     }
@@ -98,12 +117,10 @@ namespace UnityOpenApi
             {
                 if (GUILayout.Button("Test " + operation.OperationId))
                 {
-                    pathItemAsset.ExecuteOperation(operation, response =>
+                    pathItemAsset.ExecuteOperation(operation)
+                    .Then(response =>
                     {
-                        if (response.Ok)
-                            Debug.Log(response.Text);
-                        else
-                            Debug.LogError(response.Error.Message);
+                            Debug.Log(response);
                     });
                 }
             });

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
 namespace UnityOpenApi
 {
@@ -15,15 +16,37 @@ namespace UnityOpenApi
         public bool Deprecated;
         //public IDictionary<string, OpenApiCallback> Callbacks;
         //public OpenApiResponses Responses;      
-        public OARequestBody RequestBody;      
+        public OARequestBody RequestBody;
         public List<OAParameter> Parameters;
         public List<ParameterValue> ParametersValues;
-        public OAExternalDocs ExternalDocs;      
+        public OAExternalDocs ExternalDocs;
         public string Description;
         public string Summary;
         public List<OATag> Tags;
         public List<OAServer> Servers;
         public PathItemAsset pathAsset;
+        [SerializeField] private string cache;
+        public string Cache
+        {
+            get { return cache; }
+            set
+            {
+                cache = value;
+            }
+        }
+        public bool ignoreCache = false;
+
+        public bool GetFromCache(out string cache)
+        {
+            if (string.IsNullOrEmpty(this.Cache))
+            {
+                cache = string.Empty;
+                return false;
+            }
+
+            cache = this.Cache;
+            return true;
+        }
 
         public int OperationCurrentHash
         {
@@ -44,10 +67,11 @@ namespace UnityOpenApi
             }
         }
 
+
         public void SetParameterValue(string parameterName, string val)
         {
             var parVal = ParametersValues.FirstOrDefault(p => p.parameter.Name == parameterName);
-            if(parVal == null)
+            if (parVal == null)
             {
                 throw new Exception("No parameter with name <" + parameterName + "> found in operation " + OperationId);
             }

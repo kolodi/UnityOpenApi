@@ -1,7 +1,6 @@
 {
     "name": "UnityOpenApi",
     "references": [
-        "HttpMono",
         "RestClient"
     ],
     "optionalUnityReferences": [],

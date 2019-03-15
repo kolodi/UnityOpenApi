@@ -22,49 +22,57 @@ public class PetshopConsumeExample : MonoBehaviour
     [ContextMenu("Get Pets")]
     public void GetPets()
     {
-        var operation = pets.GetOperation(AOOperationType.Get);
+        var operation = pets.GetOperation(AOOperationType.GET);
         operation.SetParameterValue("tags", tags);
         operation.SetParameterValue("limit", limit.ToString());
+        operation.ignoreCache = true;
 
-        pets.ExecuteOperation<List<Pet>>(operation, pets =>
-        {
-            pets.ForEach(pet =>
+        pets.ExecuteOperation<List<Pet>>(operation)
+            .Then(pets =>
             {
-                Debug.Log("Pet ID: " + pet.id + ", type: " + pet.type + ", price: " + pet.price);
+                pets.ForEach(pet =>
+                {
+                    Debug.Log("Pet ID: " + pet.id + ", type: " + pet.type + ", price: " + pet.price);
+                });
+            })
+            .Catch(err =>
+            {
+                Debug.Log(err);
             });
-        });
     }
 
     [ContextMenu("Get Single Pet")]
     public void GetPet()
     {
-        var operation = pet.GetOperation(AOOperationType.Get);
+        var operation = pet.GetOperation(AOOperationType.GET);
         operation.SetParameterValue("id", petIdToGet);
 
-        pet.ExecuteOperation<Pet>(operation, pet =>
-        {
-            Debug.Log("Pet ID: " + pet.id + ", type: " + pet.type + ", price: " + pet.price);
-        });
+        pet.ExecuteOperation<Pet>(operation)
+            .Then(pet =>
+            {
+                Debug.Log("Pet ID: " + pet.id + ", type: " + pet.type + ", price: " + pet.price);
+            });
     }
 
     [ContextMenu("Create Pet")]
     public void CreatePet()
     {
-        var operation = pets.GetOperation(AOOperationType.Post);
+        var operation = pets.GetOperation(AOOperationType.POST);
         var serialized = JsonConvert.SerializeObject(newPet);
         operation.SetRequestBody(serialized);
-        
-        pets.ExecuteOperation<NewPetResponse>(operation, r =>
-        {
-            var pet = r.pet;
-            Debug.Log("Pet name: " + pet.name + ", type: " + pet.type + ", price: " + pet.price);
-        });
+
+        pets.ExecuteOperation<NewPetResponse>(operation)
+            .Then(r =>
+            {
+                var pet = r.pet;
+                Debug.Log("Pet name: " + pet.name + ", type: " + pet.type + ", price: " + pet.price);
+            });
     }
 
     [ContextMenu("Test Hash")]
     void TestHash()
     {
-        var operation = pets.GetOperation(AOOperationType.Post);
+        var operation = pets.GetOperation(AOOperationType.POST);
         Debug.Log(operation.OperationCurrentHash);
     }
 }

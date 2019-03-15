@@ -27,6 +27,11 @@ namespace UnityOpenApi
         public OAExternalDocs externalDocs;
         public List<PathItemAsset> pathItemAssets;
 
+        internal void ExecuteOpration(OAOperation operation)
+        {
+
+        }
+
         internal void ExecutePathOperation(OAOperation operation, Action<HttpRequestResult> response)
         {
 

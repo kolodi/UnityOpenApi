@@ -9,10 +9,16 @@ namespace Proyecto26
     public class ResponseHelper
     {
         public UnityWebRequest Request { get; private set; }
+        private string _result = string.Empty;
 
         public ResponseHelper(UnityWebRequest request)
         {
             Request = request;
+        }
+
+        public ResponseHelper(string result)
+        {
+            this._result = result;
         }
 
         public long StatusCode
@@ -47,7 +53,7 @@ namespace Proyecto26
                 }
                 catch (Exception)
                 {
-                    _text = string.Empty;
+                    _text = _result;
                 }
                 return _text;
             }

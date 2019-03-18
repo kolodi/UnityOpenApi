@@ -8,6 +8,7 @@ using UnityOpenApi;
 using System.Linq;
 using System.Collections.Generic;
 using Proyecto26;
+using RSG;
 
 [CreateAssetMenu(menuName = "Unity Open API/Parser")]
 public class OpenApiParser : ScriptableObject

@@ -41,9 +41,9 @@ namespace UnityOpenApi
         /// </summary>
         /// <param name="operation">API operation to execute</param>
         /// <returns>A promise with a string response</returns>
-        public IPromise<string> ExecuteOperation(Operation operation)
+        public IPromise<ResponseHelper> ExecuteOperation(Operation operation)
         {
-            var promise = new Promise<string>();
+            var promise = new Promise<ResponseHelper>();
 
             if (operation.ignoreCache == false)
             {
@@ -51,20 +51,20 @@ namespace UnityOpenApi
                 if (operation.GetFromCache(out data))
                 {
                     Debug.Log("From cahce");
-                    promise.Resolve(data);
+                    promise.Resolve(new ResponseHelper(data));
                     return promise;
                 }
             }
 
 
-            ApiAsset.ExecuteOperation(operation)
+            ApiAsset.ExecuteOperation(operation.Request)
                 .Then(res =>
                 {
                     if (res.Error == null)
                     {
                         operation.Cache = res.Text;
                     }
-                    promise.Resolve(res.Text);
+                    promise.Resolve(res);
                 })
                 .Catch(err => promise.Reject(err));
 
@@ -72,7 +72,7 @@ namespace UnityOpenApi
         }
 
         /// <summary>
-        /// Use this for not JSON responses like binary textures or asset bundles
+        /// 
         /// </summary>
         /// <param name="operation">API operation to execute</param>
         /// <returns>A promise with complete response wrapper containing UnityWebRequest with all data</returns>
@@ -93,10 +93,15 @@ namespace UnityOpenApi
             var promise = new Promise<T>();
 
             ExecuteOperation(operation)
-                .Then(res => promise.Resolve(JsonConvert.DeserializeObject<T>(res)))
+                .Then(res => promise.Resolve(JsonConvert.DeserializeObject<T>(res.Text)))
                 .Catch(err => promise.Reject(err));
 
             return promise;
+        }
+
+        public void PrepareOperation(Operation operation)
+        {
+            operation.Request = ApiAsset.PrepareOperation(operation);
         }
 
     }

@@ -27,16 +27,13 @@ namespace UnityOpenApi
         public ExternalDocs externalDocs;
         public List<PathItemAsset> pathItemAssets;
 
-        internal IPromise<ResponseHelper> ExecuteOperation(Operation operation)
+        internal RequestHelper PrepareOperation(Operation operation)
         {
-            var errorPromise = new Promise<ResponseHelper>();
-
-            foreach(var p in operation.ParametersValues)
+            foreach (var p in operation.ParametersValues)
             {
                 if (p.parameter.Required && string.IsNullOrEmpty(p.value))
                 {
-                    errorPromise.Reject(new Exception("Reuired parameter value missed"));
-                    return errorPromise;
+                    throw new Exception("Reuired parameter value missed");
                 }
             }
 
@@ -66,8 +63,18 @@ namespace UnityOpenApi
                 Uri = url,
                 EnableDebug = true
             };
-            return RestClient.Request(requestOptions);
 
+            return requestOptions;
+        }
+
+        internal IPromise<ResponseHelper> ExecuteOperation(RequestHelper requestOptions)
+        {
+            return RestClient.Request(requestOptions);
+        }
+
+        internal IPromise<ResponseHelper> ExecuteOperation(Operation operation)
+        {            
+            return RestClient.Request(operation.Request);
         }
         
         public string BaseUrl

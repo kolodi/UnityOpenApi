@@ -3,7 +3,7 @@
 namespace UnityOpenApi
 {
     [Serializable]
-    public enum OAReferenceType
+    public enum ReferenceType
     {
         Schema = 0,
         Response = 1,

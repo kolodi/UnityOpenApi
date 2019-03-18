@@ -3,14 +3,14 @@
 namespace UnityOpenApi
 {
     [Serializable]
-    public class OAReference
+    public class Reference
     {
         public string Id;
         public bool IsPresent;
         public string ExternalResource;
-        public OAReferenceType Type;
+        public ReferenceType Type;
         public bool IsExternal;
         public bool IsLocal;
-        public string Reference;
+        public string reference;
     }
 }

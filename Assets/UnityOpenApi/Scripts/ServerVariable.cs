@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace UnityOpenApi
 {
     [Serializable]
-    public class OAServerVariable
+    public class ServerVariable
     {
         public string Name;
         public string Description;

@@ -22,7 +22,7 @@ public class PetshopConsumeExample : MonoBehaviour
     [ContextMenu("Get Pets")]
     public void GetPets()
     {
-        var operation = pets.GetOperation(AOOperationType.GET);
+        var operation = pets.GetOperation(HttpWord.GET);
         operation.SetParameterValue("tags", tags);
         operation.SetParameterValue("limit", limit.ToString());
         operation.ignoreCache = true;
@@ -44,7 +44,7 @@ public class PetshopConsumeExample : MonoBehaviour
     [ContextMenu("Get Single Pet")]
     public void GetPet()
     {
-        var operation = pet.GetOperation(AOOperationType.GET);
+        var operation = pet.GetOperation(HttpWord.GET);
         operation.SetParameterValue("id", petIdToGet);
 
         pet.ExecuteOperation<Pet>(operation)
@@ -57,7 +57,7 @@ public class PetshopConsumeExample : MonoBehaviour
     [ContextMenu("Create Pet")]
     public void CreatePet()
     {
-        var operation = pets.GetOperation(AOOperationType.POST);
+        var operation = pets.GetOperation(HttpWord.POST);
         var serialized = JsonConvert.SerializeObject(newPet);
         operation.SetRequestBody(serialized);
 
@@ -72,7 +72,7 @@ public class PetshopConsumeExample : MonoBehaviour
     [ContextMenu("Test Hash")]
     void TestHash()
     {
-        var operation = pets.GetOperation(AOOperationType.POST);
+        var operation = pets.GetOperation(HttpWord.POST);
         Debug.Log(operation.OperationCurrentHash);
     }
 }

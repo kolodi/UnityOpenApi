@@ -3,7 +3,7 @@
 namespace UnityOpenApi
 {
     [Serializable]
-    public enum OAParameterLocation
+    public enum ParameterLocation
     {
         Query = 0,
         Header = 1,

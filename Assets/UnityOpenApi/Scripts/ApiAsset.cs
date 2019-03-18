@@ -16,18 +16,18 @@ namespace UnityOpenApi
     {
         [SerializeField]
         [HideInInspector]
-        OAServer _currentServer;
-        public OAServer CurrentServer { get => _currentServer; set => _currentServer = value; }
+        Server _currentServer;
+        public Server CurrentServer { get => _currentServer; set => _currentServer = value; }
         [SerializeField]
         [HideInInspector]
-        public List<OAServer> servers;
+        public List<Server> servers;
         [SerializeField]
-        public OAInfo info;
+        public Info info;
         [SerializeField]
-        public OAExternalDocs externalDocs;
+        public ExternalDocs externalDocs;
         public List<PathItemAsset> pathItemAssets;
 
-        internal IPromise<ResponseHelper> ExecuteOperation(OAOperation operation)
+        internal IPromise<ResponseHelper> ExecuteOperation(Operation operation)
         {
             var errorPromise = new Promise<ResponseHelper>();
 
@@ -42,13 +42,13 @@ namespace UnityOpenApi
 
             var paramsWithValues = operation.ParametersValues.Where(p => !string.IsNullOrEmpty(p.value));
 
-            var queryParams = paramsWithValues.Where(p => p.parameter.In == OAParameterLocation.Query)
+            var queryParams = paramsWithValues.Where(p => p.parameter.In == ParameterLocation.Query)
                 .ToDictionary(p => p.parameter.Name, p => p.value);
 
-            var pathParams = paramsWithValues.Where(p => p.parameter.In == OAParameterLocation.Path)
+            var pathParams = paramsWithValues.Where(p => p.parameter.In == ParameterLocation.Path)
                 .ToDictionary(p => p.parameter.Name, p => p.value);
 
-            var headerParams = paramsWithValues.Where(p => p.parameter.In == OAParameterLocation.Header)
+            var headerParams = paramsWithValues.Where(p => p.parameter.In == ParameterLocation.Header)
                 .ToDictionary(p => p.parameter.Name, p => p.value);
 
             string operationPath = BuildPathWithParams(operation.pathAsset.Path, pathParams);

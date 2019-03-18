@@ -3,7 +3,7 @@
 namespace UnityOpenApi
 {
     [Serializable]
-    public class OAExternalDocs
+    public class ExternalDocs
     {
         public string Description;
         public string Url;

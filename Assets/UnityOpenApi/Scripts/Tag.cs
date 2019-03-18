@@ -3,10 +3,10 @@
 namespace UnityOpenApi
 {
     [Serializable]
-    public class OATag
+    public class Tag
     {
         public string Name;
         public string Description;
-        public OAExternalDocs ExternalDocs;
+        public ExternalDocs ExternalDocs;
     }
 }

@@ -3,7 +3,7 @@
 namespace UnityOpenApi
 {
     [Serializable]
-    public class OAParameter
+    public class Parameter
     {
         public string Name;
         public bool Required;
@@ -13,8 +13,8 @@ namespace UnityOpenApi
         public bool AllowEmptyValue;
         public bool Deprecated;
         public string Description;
-        public OAParameterLocation In;
-        public OAReference Reference;
+        public ParameterLocation In;
+        public Reference Reference;
         public bool UnresolvedReference;
         //public IDictionary<string, OpenApiMediaType> Content;
     }

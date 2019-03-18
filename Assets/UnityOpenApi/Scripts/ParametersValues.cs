@@ -10,7 +10,7 @@ namespace UnityOpenApi
     public class ParameterValue
     {
         [HideInInspector]
-        public OAParameter parameter;
+        public Parameter parameter;
         public string value;
         public bool HasValue
         {

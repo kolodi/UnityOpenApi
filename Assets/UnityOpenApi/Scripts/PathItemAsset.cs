@@ -21,16 +21,16 @@ namespace UnityOpenApi
         public string Path;
         public string Summary;
         public string Description;
-        public List<OAOperation> Operations;
-        public List<OAServer> Servers;
-        public List<OAParameter> Parameters;
+        public List<Operation> Operations;
+        public List<Server> Servers;
+        public List<Parameter> Parameters;
 
-        public OAOperation GetOperation(string operationId)
+        public Operation GetOperation(string operationId)
         {
             return Operations.First(o => o.OperationId == operationId);
         }
 
-        public OAOperation GetOperation(AOOperationType operationType)
+        public Operation GetOperation(HttpWord operationType)
         {
             return Operations.First(o => o.OperationType == operationType);
         }
@@ -41,7 +41,7 @@ namespace UnityOpenApi
         /// </summary>
         /// <param name="operation">API operation to execute</param>
         /// <returns>A promise with a string response</returns>
-        public IPromise<string> ExecuteOperation(OAOperation operation)
+        public IPromise<string> ExecuteOperation(Operation operation)
         {
             var promise = new Promise<string>();
 
@@ -76,7 +76,7 @@ namespace UnityOpenApi
         /// </summary>
         /// <param name="operation">API operation to execute</param>
         /// <returns>A promise with complete response wrapper containing UnityWebRequest with all data</returns>
-        public IPromise<ResponseHelper> ExecuteOperationRaw(OAOperation operation)
+        public IPromise<ResponseHelper> ExecuteOperationRaw(Operation operation)
         {
             return ApiAsset.ExecuteOperation(operation);
         }
@@ -88,7 +88,7 @@ namespace UnityOpenApi
         /// <typeparam name="T"></typeparam>
         /// <param name="operation">API operation to execute</param>
         /// <returns>A promise with automatically parsed data from JSON</returns>
-        public IPromise<T> ExecuteOperation<T>(OAOperation operation)
+        public IPromise<T> ExecuteOperation<T>(Operation operation)
         {
             var promise = new Promise<T>();
 

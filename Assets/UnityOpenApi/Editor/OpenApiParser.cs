@@ -67,7 +67,7 @@ public class OpenApiParser : ScriptableObject
         ApiAsset apiAsset = AssetsHelper.GetOrCreateScriptableObject<ApiAsset>(assetsPath, doc.Info.Title);
 
         #region ApiAsset update
-        apiAsset.info = new OAInfo()
+        apiAsset.info = new Info()
         {
             Title = doc.Info.Title,
             Description = doc.Info.Description,
@@ -113,9 +113,9 @@ public class OpenApiParser : ScriptableObject
         AssetDatabase.SaveAssets();
     }
 
-    private OAParameter CreateAOParameter(OpenApiParameter openApiParameter)
+    private Parameter CreateAOParameter(OpenApiParameter openApiParameter)
     {
-        return new OAParameter()
+        return new Parameter()
         {
             Name = openApiParameter.Name,
             Required = openApiParameter.Required,
@@ -126,19 +126,19 @@ public class OpenApiParser : ScriptableObject
             Description = openApiParameter.Description,
             UnresolvedReference = openApiParameter.UnresolvedReference,
 
-            In = (OAParameterLocation)openApiParameter.In,
+            In = (UnityOpenApi.ParameterLocation)openApiParameter.In,
 
             Reference = CreateReference(openApiParameter.Reference),
         };
     }
 
-    private OAOperation CreateAOOperation(OperationType operationType, OpenApiOperation op, PathItemAsset pathItemAsset)
+    private Operation CreateAOOperation(OperationType operationType, OpenApiOperation op, PathItemAsset pathItemAsset)
     {
-        var operation = new OAOperation()
+        var operation = new Operation()
         {
             pathAsset = pathItemAsset,
             OperationId = op.OperationId,
-            OperationType = (AOOperationType)operationType,
+            OperationType = (HttpWord)operationType,
             Summary = op.Summary,
             Description = op.Description,
             Deprecated = op.Deprecated,
@@ -161,9 +161,9 @@ public class OpenApiParser : ScriptableObject
         return operation;
     }
 
-    private OATag CreateOATag(OpenApiTag openApiTag)
+    private Tag CreateOATag(OpenApiTag openApiTag)
     {
-        return new OATag()
+        return new Tag()
         {
             Name = openApiTag.Name,
             Description = openApiTag.Description,
@@ -171,40 +171,40 @@ public class OpenApiParser : ScriptableObject
         };
     }
 
-    public OARequestBody CreateOARequestBody(OpenApiRequestBody requestBody)
+    public RequestBody CreateOARequestBody(OpenApiRequestBody requestBody)
     {
-        if (requestBody == null) return new OARequestBody();
+        if (requestBody == null) return new RequestBody();
 
-        return new OARequestBody()
+        return new RequestBody()
         {
             Description = requestBody.Description,
             Required = requestBody.Required,
         };
     }
 
-    private OAReference CreateReference(OpenApiReference openApiReference)
+    private Reference CreateReference(OpenApiReference openApiReference)
     {
-        if (openApiReference == null) return new OAReference();
+        if (openApiReference == null) return new Reference();
 
-        return new OAReference()
+        return new Reference()
         {
             IsPresent = true,
             ExternalResource = openApiReference.ExternalResource,
-            Type = (OAReferenceType)openApiReference.Type,
+            Type = (UnityOpenApi.ReferenceType)openApiReference.Type,
             Id = openApiReference.Id,
             IsExternal = openApiReference.IsExternal,
             IsLocal = openApiReference.IsLocal,
-            Reference = string.IsNullOrEmpty(openApiReference.ReferenceV2)
+            reference = string.IsNullOrEmpty(openApiReference.ReferenceV2)
             ? openApiReference.ReferenceV3 : openApiReference.ReferenceV2,
         };
     }
 
-    private OAContact CreateContact(OpenApiContact openApiContact)
+    private Contact CreateContact(OpenApiContact openApiContact)
     {
         if (openApiContact == null)
-            return new OAContact();
+            return new Contact();
 
-        return new OAContact()
+        return new Contact()
         {
             Url = openApiContact.Url.ToString(),
             Name = openApiContact.Name,
@@ -213,11 +213,11 @@ public class OpenApiParser : ScriptableObject
         };
     }
 
-    private OALicense CreateLicence(OpenApiLicense openApiLicense)
+    private License CreateLicence(OpenApiLicense openApiLicense)
     {
-        if (openApiLicense == null) return new OALicense();
+        if (openApiLicense == null) return new License();
 
-        return new OALicense()
+        return new License()
         {
             Name = openApiLicense.Name,
             Url = openApiLicense.Url.ToString(),
@@ -225,26 +225,26 @@ public class OpenApiParser : ScriptableObject
         };
     }
 
-    private OAExternalDocs CreateExternalDocs(OpenApiExternalDocs ExternalDocs)
+    private ExternalDocs CreateExternalDocs(OpenApiExternalDocs ExternalDocs)
     {
         if (ExternalDocs != null)
         {
-            return new OAExternalDocs()
+            return new ExternalDocs()
             {
                 Description = ExternalDocs.Description,
                 Url = ExternalDocs.Url.ToString(),
             };
         }
-        return new OAExternalDocs();
+        return new ExternalDocs();
     }
 
-    private OAServer CreateAOServer(OpenApiServer s)
+    private Server CreateAOServer(OpenApiServer s)
     {
-        var server = new OAServer()
+        var server = new Server()
         {
             Description = s.Description,
             Url = s.Url,
-            Variables = s.Variables.ToDictionary(v => v.Key, v => new OAServerVariable()
+            Variables = s.Variables.ToDictionary(v => v.Key, v => new ServerVariable()
             {
                 Name = v.Key,
                 Description = v.Value.Description,

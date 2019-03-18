@@ -5,10 +5,10 @@ using System.Linq;
 namespace UnityOpenApi
 {
     [Serializable]
-    public class OAServer
+    public class Server
     {
         public string Description;
         public string Url;
-        public List<OAServerVariable> Variables;
+        public List<ServerVariable> Variables;
     }
 }

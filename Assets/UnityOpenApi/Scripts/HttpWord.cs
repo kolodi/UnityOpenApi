@@ -1,6 +1,6 @@
 ﻿namespace UnityOpenApi
 {
-    public enum AOOperationType
+    public enum HttpWord
     {
         GET = 0,
         PUT = 1,

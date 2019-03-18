@@ -3,13 +3,13 @@
 namespace UnityOpenApi
 {
     [Serializable]
-    public class OAInfo
+    public class Info
     {
         public string Title;
         public string Description;
         public string Version;
         public string TermsOfService;
-        public OAContact Contact;
-        public OALicense License;
+        public Contact Contact;
+        public License License;
     }
 }

@@ -3,7 +3,7 @@
 namespace UnityOpenApi
 {
     [Serializable]
-    public class OARequestBody
+    public class RequestBody
     {
         public string Description;
         public bool Required;

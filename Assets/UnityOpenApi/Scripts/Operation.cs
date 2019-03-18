@@ -7,23 +7,23 @@ using UnityEngine;
 namespace UnityOpenApi
 {
     [Serializable]
-    public class OAOperation
+    public class Operation
     {
 
         public string OperationId;
-        public AOOperationType OperationType;
+        public HttpWord OperationType;
         //public IList<OpenApiSecurityRequirement> Security;      
         public bool Deprecated;
         //public IDictionary<string, OpenApiCallback> Callbacks;
         //public OpenApiResponses Responses;      
-        public OARequestBody RequestBody;
-        public List<OAParameter> Parameters;
+        public RequestBody RequestBody;
+        public List<Parameter> Parameters;
         public List<ParameterValue> ParametersValues;
-        public OAExternalDocs ExternalDocs;
+        public ExternalDocs ExternalDocs;
         public string Description;
         public string Summary;
-        public List<OATag> Tags;
-        public List<OAServer> Servers;
+        public List<Tag> Tags;
+        public List<Server> Servers;
         public PathItemAsset pathAsset;
         [SerializeField] private string cache;
         public string Cache

@@ -40,7 +40,7 @@ MonoBehaviour:
         Type: 0
         IsExternal: 0
         IsLocal: 0
-        Reference: 
+        reference: 
       UnresolvedReference: 0
     ParametersValues:
     - parameter:
@@ -59,15 +59,20 @@ MonoBehaviour:
           Type: 0
           IsExternal: 0
           IsLocal: 0
-          Reference: 
+          reference: 
         UnresolvedReference: 0
       value: 
+    ExternalDocs:
+      Description: 
+      Url: 
     Description: Returns a user based on a single ID, if the user does not have access
       to the pet
     Summary: 
     Tags: []
     Servers: []
     pathAsset: {fileID: 11400000}
+    cache: 
+    ignoreCache: 0
   - OperationId: deletePet
     OperationType: 3
     Deprecated: 0
@@ -91,7 +96,7 @@ MonoBehaviour:
         Type: 0
         IsExternal: 0
         IsLocal: 0
-        Reference: 
+        reference: 
       UnresolvedReference: 0
     ParametersValues:
     - parameter:
@@ -110,13 +115,18 @@ MonoBehaviour:
           Type: 0
           IsExternal: 0
           IsLocal: 0
-          Reference: 
+          reference: 
         UnresolvedReference: 0
       value: 
+    ExternalDocs:
+      Description: 
+      Url: 
     Description: deletes a single pet based on the ID supplied
     Summary: 
     Tags: []
     Servers: []
     pathAsset: {fileID: 11400000}
+    cache: 
+    ignoreCache: 1
   Servers: []
   Parameters: []

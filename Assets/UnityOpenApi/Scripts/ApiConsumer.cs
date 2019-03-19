@@ -12,9 +12,10 @@ namespace UnityOpenApi
         public UnityEvent onStart;
         public UnityEvent onEnd;
         public UnityResponseHelperEvent onResult;
+        public UnityStringEvent onResultText;
         public UnityFloatEvent onUploadUpdate;
         public UnityFloatEvent onDownloadUpdate;
-        public UnityRequestExceptionEvent onError;
+        public UnityStringEvent onError;
 
 
         [SerializeField] PathItemAsset pathItem = null;
@@ -38,10 +39,11 @@ namespace UnityOpenApi
                 .Then(res =>
                 {
                     onResult?.Invoke(res);
+                    onResultText?.Invoke(res.Text);
                 })
                 .Catch(ex => 
                 {
-                    onError?.Invoke(ex as RequestException);
+                    onError?.Invoke(ex.Message);
                 })
                 .Finally(() =>
                 {

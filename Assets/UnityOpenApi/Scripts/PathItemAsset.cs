@@ -41,7 +41,7 @@ namespace UnityOpenApi
         /// </summary>
         /// <param name="operation">API operation to execute</param>
         /// <returns>A promise with a string response</returns>
-        public IPromise<ResponseHelper> ExecuteOperation(Operation operation)
+        public IPromise<ResponseHelper> ExecuteOperation(Operation operation, RequestHelper requestOptions)
         {
             var promise = new Promise<ResponseHelper>();
 
@@ -57,7 +57,7 @@ namespace UnityOpenApi
             }
 
 
-            ApiAsset.ExecuteOperation(operation.Request)
+            ApiAsset.ExecuteOperation(operation, requestOptions)
                 .Then(res =>
                 {
                     if (res.Error == null)
@@ -76,9 +76,9 @@ namespace UnityOpenApi
         /// </summary>
         /// <param name="operation">API operation to execute</param>
         /// <returns>A promise with complete response wrapper containing UnityWebRequest with all data</returns>
-        public IPromise<ResponseHelper> ExecuteOperationRaw(Operation operation)
+        public IPromise<ResponseHelper> ExecuteOperationRaw(Operation operation, RequestHelper requestOptions)
         {
-            return ApiAsset.ExecuteOperation(operation);
+            return ApiAsset.ExecuteOperation(operation, requestOptions);
         }
 
         /// <summary>
@@ -88,20 +88,15 @@ namespace UnityOpenApi
         /// <typeparam name="T"></typeparam>
         /// <param name="operation">API operation to execute</param>
         /// <returns>A promise with automatically parsed data from JSON</returns>
-        public IPromise<T> ExecuteOperation<T>(Operation operation)
+        public IPromise<T> ExecuteOperation<T>(Operation operation, RequestHelper requestOptions)
         {
             var promise = new Promise<T>();
 
-            ExecuteOperation(operation)
+            ExecuteOperation(operation, requestOptions)
                 .Then(res => promise.Resolve(JsonConvert.DeserializeObject<T>(res.Text)))
                 .Catch(err => promise.Reject(err));
 
             return promise;
-        }
-
-        public void PrepareOperation(Operation operation)
-        {
-            operation.Request = ApiAsset.PrepareOperation(operation);
         }
 
     }
@@ -122,7 +117,8 @@ namespace UnityOpenApi
             {
                 if (GUILayout.Button("Test " + operation.OperationId))
                 {
-                    pathItemAsset.ExecuteOperation(operation)
+                    var options = pathItemAsset.ApiAsset.PrepareOperation(operation);
+                    pathItemAsset.ExecuteOperation(operation, options)
                     .Then(response =>
                     {
                             Debug.Log(response);

@@ -27,8 +27,22 @@ namespace UnityOpenApi
         public ExternalDocs externalDocs;
         public List<PathItemAsset> pathItemAssets;
 
-        internal RequestHelper PrepareOperation(Operation operation)
+        // Temp solution for authorization tokens in header
+        public string authToken;
+
+        public RequestHelper PrepareOperation(Operation operation)
         {
+
+            #region auth
+            /// temporary workaround for only one type of authorization, 
+            /// todo: automatic uthorization types switching and injecting
+            var authParameterValue = operation.ParametersValues.FirstOrDefault(p => p.parameter.Name == "Authorization");
+            if (authParameterValue != null)
+            {
+                operation.SetParameterValue("Authorization", authToken);
+            }
+            #endregion
+
             foreach (var p in operation.ParametersValues)
             {
                 if (p.parameter.Required && string.IsNullOrEmpty(p.value))
@@ -67,16 +81,17 @@ namespace UnityOpenApi
             return requestOptions;
         }
 
-        internal IPromise<ResponseHelper> ExecuteOperation(RequestHelper requestOptions)
+        internal IPromise<ResponseHelper> ExecuteOperation(Operation operation, RequestHelper requestOptions)
         {
-            return RestClient.Request(requestOptions);
+            var promise = new Promise<ResponseHelper>();
+
+            RestClient.Request(requestOptions)
+                .Then(res => promise.Resolve(res))
+                .Catch(ex => promise.Reject(ex));
+
+            return promise;
         }
 
-        internal IPromise<ResponseHelper> ExecuteOperation(Operation operation)
-        {            
-            return RestClient.Request(operation.Request);
-        }
-        
         public string BaseUrl
         {
             get

@@ -32,10 +32,9 @@ namespace UnityOpenApi
         public virtual void UpdateFromApi()
         {
             var op = Operation;
-            pathItem.PrepareOperation(op);
-            StartCoroutine(CheckProgress(op));
+            var options = pathItem.ApiAsset.PrepareOperation(op);
             onStart?.Invoke();
-            pathItem.ExecuteOperation(op)
+            pathItem.ExecuteOperation(op, options)
                 .Then(res =>
                 {
                     onResult?.Invoke(res);
@@ -47,18 +46,7 @@ namespace UnityOpenApi
                 .Finally(() =>
                 {
                     onEnd?.Invoke();
-                    op.Request = null;
                 });
-        }
-
-        IEnumerator CheckProgress(Operation op)
-        {
-            while (op.Request != null)
-            {
-                onDownloadUpdate?.Invoke(op.Request.UploadProgress);
-                onUploadUpdate?.Invoke(op.Request.UploadProgress);
-                yield return null;
-            }
         }
 
         private void ExposeParameters()

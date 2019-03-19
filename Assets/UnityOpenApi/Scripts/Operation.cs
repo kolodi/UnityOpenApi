@@ -26,7 +26,6 @@ namespace UnityOpenApi
         public List<Tag> Tags;
         public List<Server> Servers;
         public PathItemAsset pathAsset;
-        public RequestHelper Request { get; set; }
         [SerializeField] private string cache;
         public string Cache
         {
